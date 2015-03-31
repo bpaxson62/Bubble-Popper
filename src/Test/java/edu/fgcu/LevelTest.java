@@ -1,4 +1,4 @@
-package edu.fgcu;
+package java.edu.fgcu;
 
 import org.junit.Before;
 import org.junit.Test;

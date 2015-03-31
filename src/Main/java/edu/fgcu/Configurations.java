@@ -1,4 +1,4 @@
-package edu.fgcu;
+package java.edu.fgcu;
 
 public final class Configurations  {
 	

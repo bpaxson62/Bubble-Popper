@@ -1,38 +1,17 @@
-package edu.fgcu;
+package java.edu.fgcu;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.scene.Parent;
-import javafx.animation.ScaleTransition;
-import javafx.animation.ScaleTransitionBuilder;
-import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ScoreBoardController{
 

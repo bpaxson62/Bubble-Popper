@@ -1,4 +1,4 @@
-package edu.fgcu;
+package java.edu.fgcu;
 
 
 import javafx.animation.ScaleTransition;
@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;

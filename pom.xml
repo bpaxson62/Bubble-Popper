@@ -5,7 +5,7 @@
 	<artifactId>fgcu</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Bubble-Popper</name>
+	<name>Bubble_Popper</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
