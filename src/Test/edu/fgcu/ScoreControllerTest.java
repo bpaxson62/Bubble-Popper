@@ -1,13 +1,10 @@
-package bubblePopperTest;
+package edu.fgcu;
 
 import javafx.collections.ObservableList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runners.Parameterized.Parameters;
 
-import bubblePopper.ScoreBoardController;
-import bubblePopper.ScoreBoardController.Scores;
 import static org.junit.Assert.*;
 
 public class ScoreControllerTest {

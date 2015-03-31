@@ -1,4 +1,4 @@
-package bubblePopper;
+package edu.fgcu;
 
 
 import javafx.animation.ScaleTransition;

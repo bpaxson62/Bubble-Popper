@@ -1,4 +1,4 @@
-package bubblePopperTest;
+package edu.fgcu;
 
 import org.junit.Before;
 import org.junit.Test;

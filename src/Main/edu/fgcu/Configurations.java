@@ -1,4 +1,4 @@
-package bubblePopper;
+package edu.fgcu;
 
 public final class Configurations  {
 	
