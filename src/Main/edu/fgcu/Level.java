@@ -1,4 +1,4 @@
-package java.edu.fgcu;
+package edu.fgcu;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;

@@ -1,4 +1,4 @@
-package java.edu.fgcu;
+package edu.fgcu;
 
 import java.io.File;
 
