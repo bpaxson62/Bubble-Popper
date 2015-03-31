@@ -5,7 +5,7 @@ import org.junit.Test;
 public class ScoreControllerIT {
 	
 	@Test
-	public static void scoreBoardStartItTest(){
+	public void scoreBoardStartItTest(){
 		throw new RuntimeException();
 		
 	}

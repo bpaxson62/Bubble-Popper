@@ -6,7 +6,7 @@ import org.junit.Test;
 public class GifCreateTest {
 	
 	@Before
-	public static void setup(){
+	public void setup(){
 		//put setup info here
 
 	}
