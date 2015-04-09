@@ -1,22 +1,40 @@
 package edu.fgcu;
 
+import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-public class LevelTest {
-	private static GameController gameController;
-	Level testLevel;
-	@Before
-	public void setup() {
+
+	public class LevelTest extends Application {
+		private static GameController gameController;
+		Level testLevel;
+
+		@BeforeClass
+		public static void initJFX() {
+			Thread t = new Thread("Initialize the JavaFX") {
+				@Override
+				public void run() {
+					Application.launch(Main.class, new String[0]);
+				}
+			};
+			t.setDaemon(true);
+			t.start();
+		}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
 			//put setup info here
 		// This creates the basic window, commented out for the moment
-		//This works, must remove init(primaryStage) to make it work
-		Stage primaryStage = new Stage();
+		//This works, must remove init(primaryStage) to make it wor
 		BorderPane root = new BorderPane();
 		Group gameGroup = new Group();
 		root.setCenter(gameGroup);
@@ -38,14 +56,23 @@ public class LevelTest {
 	public void testBubbleCreate() {
 		// Test for creating a bubble
 		//Should create bubble of radius=RADIUS at coordinates supplied
-		testLevel.circlesOn.size()
+		Circle myCircle = new Circle(Configurations.radius);
+		assertNotNull(myCircle);
+		assertTrue(Configurations.radius==myCircle.getRadius());
+
+
 	}
 	
 	@Test
 	public void testBubbleMinBoundries() {
 		//Test for minimum distance from walls and other bubbles
 		//before creating bubble at locations
-		throw new RuntimeException();
+		Circle myCircle = new Circle(Configurations.radius);
+		testLevel.getChildren().add(myCircle);
+
+
+
+
 		
 	}
 	
@@ -60,14 +87,34 @@ public class LevelTest {
 	public void testBubbleHitsWall() {
 		//Test for when bubble hits a wall
 		//Bubbble should pop and user loses life
-		throw new RuntimeException();
+		testLevel = new Level(1);
+		Circle myCircle = new Circle(Configurations.radius);
+		testLevel.getChildren().add(myCircle);
+		myCircle.setLayoutY(0);
+		myCircle.setLayoutX(0);
+		testLevel.checkBounds(myCircle);
+
+		assertTrue(testLevel.getChildren().contains(myCircle));
+
 	}
 	
 	@Test
 	public void testBubbleHitsBubble() {
 		//Test for when bubbble hits another bubble
 		//Both bubbles should pop and user loses life twice
-		throw new RuntimeException();
+		testLevel = new Level(1);
+		Circle myCircle = new Circle(Configurations.radius);
+		Circle myCircle2 = new Circle(Configurations.radius);
+		testLevel.getChildren().add(myCircle);
+		myCircle.setLayoutY(200);
+		myCircle.setLayoutX(200);
+		myCircle2.setLayoutY(200);
+		myCircle2.setLayoutX(200);
+		testLevel.circlesOn.add(myCircle2);
+		testLevel.circleIntersection(myCircle);
+		assertTrue(testLevel.circlesComplete.contains(myCircle));
+
+		assertTrue(testLevel.getChildren().contains(myCircle));
 	}
 	
 	@Test
