@@ -38,7 +38,7 @@ public class LevelTest {
 	public void testBubbleCreate() {
 		// Test for creating a bubble
 		//Should create bubble of radius=RADIUS at coordinates supplied
-		testLevel.circlesOn.size()
+		testLevel.circlesOn.size();
 	}
 	
 	@Test
