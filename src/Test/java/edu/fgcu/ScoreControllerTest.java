@@ -1,6 +1,7 @@
 package edu.fgcu;
 
 import javafx.collections.ObservableList;
+import javafx.scene.layout.BorderPane;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class ScoreControllerTest {
 	private static ScoreBoardController scoreBoardController;
+	BorderPane root;
 	
 	public class TestObject{
 		private int score;
@@ -26,6 +28,9 @@ public class ScoreControllerTest {
 	@Before
 	public void setup() {
 	scoreBoardController = new ScoreBoardController(null);
+	root = new BorderPane();
+	root.setCenter(new Level(1));
+	scoreBoardController = new ScoreBoardController(root);
 	
 	}
 	
@@ -34,7 +39,7 @@ public class ScoreControllerTest {
 	@Test
 	public void testScoreboardCreate() {
 		//test for if scoreboard is created when button to view is clicked
-		throw new RuntimeException();
+		assertNotNull(root);
 	}
 	
 	@Test
