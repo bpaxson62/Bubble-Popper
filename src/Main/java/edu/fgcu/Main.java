@@ -30,6 +30,7 @@ public class Main extends Application {
     	BorderPane root = new BorderPane();
         Group gameGroup = new Group();
         root.setCenter(gameGroup);
+
     	gameController = new GameController(root);
     	primaryStage.setTitle("Bubble Popper");
     	primaryStage.setResizable(false);

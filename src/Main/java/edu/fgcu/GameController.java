@@ -66,6 +66,8 @@ public class GameController{
 	public void changeState(int i) {
 		Group myGroup = new Group();
 		root.setCenter(new Level(0));
+
+
 		//root.setCenter(myGroup);
 
 		//border.setCenter();

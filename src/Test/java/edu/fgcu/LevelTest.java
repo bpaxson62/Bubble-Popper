@@ -1,14 +1,36 @@
 package edu.fgcu;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class LevelTest {
-	
+	private static GameController gameController;
+	Level testLevel;
 	@Before
 	public void setup() {
 			//put setup info here
+		// This creates the basic window, commented out for the moment
+		//This works, must remove init(primaryStage) to make it work
+		Stage primaryStage = new Stage();
+		BorderPane root = new BorderPane();
+		Group gameGroup = new Group();
+		root.setCenter(gameGroup);
+
+		gameController = new GameController(root);
+		primaryStage.setTitle("Bubble Popper");
+		primaryStage.setResizable(false);
+		primaryStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
+		primaryStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		//scene.setFill(Color.BLACK);
+		//Button button = new Button("All Scores");
+		testLevel = new Level(1);
 
 	}
 	
@@ -16,7 +38,7 @@ public class LevelTest {
 	public void testBubbleCreate() {
 		// Test for creating a bubble
 		//Should create bubble of radius=RADIUS at coordinates supplied
-
+		testLevel.circlesOn.size()
 	}
 	
 	@Test
