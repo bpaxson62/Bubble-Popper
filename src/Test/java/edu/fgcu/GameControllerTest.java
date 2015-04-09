@@ -42,14 +42,18 @@ public class GameControllerTest {
 	public void testNormalDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		throw new RuntimeException();
+		gameController.setDifficulty(1);
+		int difficulty = gameController.getDifficulty();
+		assertEquals("Should equal 2",difficulty,2);
 	}
 	
 	@Test
 	public void testHardDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		throw new RuntimeException();
+		gameController.setDifficulty(1);
+		int difficulty = gameController.getDifficulty();
+		assertEquals("Should equal 3",difficulty,3);
 		
 	}
 	
