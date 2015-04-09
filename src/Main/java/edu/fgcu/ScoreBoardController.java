@@ -15,7 +15,8 @@ import java.util.List;
 
 public class ScoreBoardController{
 
-	private Group scoreBoard;
+	//private Group scoreBoard;
+	private BorderPane root;
 	private int highScore = 0;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
@@ -40,8 +41,10 @@ public class ScoreBoardController{
 		}
 	}
 	
-	public ScoreBoardController(Group scoreBoard){
-		this.scoreBoard = scoreBoard;
+	
+	
+	public ScoreBoardController(BorderPane scoreBoard){
+		this.root = scoreBoard;
 	}
 	
 	
