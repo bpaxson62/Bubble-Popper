@@ -32,7 +32,7 @@ public class GameController{
 		return difficulty;
 	}
 	
-	public void setDifficulty(){
+	public void setDifficulty(int difficulty){
 		this.difficulty = difficulty;
 	}
 	

@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.fgcu.GameController;
 import static org.junit.Assert.*;
 
 public class GameControllerTest {
@@ -32,8 +33,9 @@ public class GameControllerTest {
 	public void testEasyDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		throw new RuntimeException();
-	
+		gameController.setDifficulty(1);
+		int difficulty = gameController.getDifficulty();
+		assertEquals("Should equal 1",difficulty,1);
 	}
 	
 	@Test
