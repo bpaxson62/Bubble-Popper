@@ -1,12 +1,20 @@
 package edu.fgcu;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
@@ -15,22 +23,25 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class ScoreBoardController{
+public class ScoreBoardController extends Parent{
 
 	//private Group scoreBoard;
 	private BorderPane root;
+	private Group myGroup;
 	private int highScore = 0;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
-	private static ObservableList<Scores> allScores; //Store all scores here
-	
+	private ObservableList<Scores> allScores; //Store all scores here
+	private static GridPane grid;
+	private static CreateGridPane createGridPane;
+	//static ScoreBoardController outer = new ScoreBoardController(root);
 	
 	//class to create object for allScores list
 	public class Scores{
 		private int scores;
 		private String difficulty;
 		
-		Scores(int scores, int difficulty){
+		public Scores(int scores, int difficulty){
 			this.scores=scores;
 			switch(difficulty){
 			case 1: this.difficulty = Configurations.EASY_DIFFICULTY;
@@ -43,14 +54,49 @@ public class ScoreBoardController{
 		}
 	}
 	
-	
+	 public static CreateGridPane getGridPane(){
+	    	return createGridPane;
+	    }
 	
 	public ScoreBoardController(BorderPane scoreBoard){
 		this.root = scoreBoard;
 	}
-	
-	
 
+	public void createToolBar(int i){
+		Group myGroup = new Group();
+		ToolBar toolbar = new ToolBar();
+    	ChoiceBox difficulties = new ChoiceBox();
+    	Button scoreBoardBtn = new Button("Score Board");
+    	difficulties.getItems().addAll("Easy","Normal","Hard");
+    	final Label label = new Label();
+    	toolbar.getItems().add(scoreBoardBtn);
+    	toolbar.getItems().add(difficulties);
+    	toolbar.getItems().add(label);
+    	root.setTop(toolbar);
+    	
+    	//handiling button press for scoreboard creation
+    	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
+    	    public void handle(ActionEvent e) {
+    	        label.setText("Accepted");
+    	        final Stage scoreStage = new Stage();
+    	        BorderPane scorePane = new BorderPane();
+    	        Group rootGroup = new Group();
+    	        createGridPane = new CreateGridPane(scorePane);
+    	        scorePane.setCenter(rootGroup);
+    	        scoreStage.setTitle("Score Board");
+    	        scoreStage.setResizable(false);
+    	        scoreStage.setWidth(Configurations.SCORE_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
+    	        scoreStage.setHeight(Configurations.SCORE_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
+    	        Scene scoreScene = new Scene(scorePane);
+    	        scoreStage.setScene(scoreScene);
+    	        scoreStage.centerOnScreen();
+    	        scorePane.setCenter(createGridPane.CreateGrid(1));
+    	        scoreStage.show();
+    	        
+    	    }
+    		});
+		
+	}
 
 	//Get Methods
 	public int getHighScore(){
@@ -80,7 +126,7 @@ public class ScoreBoardController{
 	
 	//Adds score with difficulty setting to list
 	
-	public void addScoreToList(int score, int difficulty){
+	public  void addScoreToList(int score, int difficulty){
 		if (allScores != null){
 			allScores.add(new Scores(score, difficulty));
 		}
@@ -88,8 +134,14 @@ public class ScoreBoardController{
 	}
 	
 	//GridPane to display the scores in one column and difficulty in another
-	public static GridPane addGridPane(){
-		BorderPane score = new BorderPane();
+	public class CreateGridPane extends Parent{
+		private BorderPane score;
+		
+		public CreateGridPane(BorderPane scoreBoard){
+		
+		this.score = scoreBoard;
+		
+		//BorderPane score = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
@@ -103,40 +155,42 @@ public class ScoreBoardController{
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
+		addScoreToList(2,2);
+		//allScores.add(new Scores(3, 3));
+		
+		if(allScores == null){
+			scoreTxt = new Text("You have not played any games yet.");
+			grid.add(scoreTxt,3,2);
+			score.setTop(grid);
+			return;	
+		}
+		
 		Text scoreHeader = new Text("Score");
 		scoreHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(scoreHeader, 1, 1); //column 2, row 2
 		Text difficultyHeader = new Text("Difficulty");
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(difficultyHeader, 5, 1); //column 3, row 2
-		
-		//score.setCenter(grid);
-		//Checking if list is empty
-		//Have default message display if yes
-		/*
-		if(allScores.isEmpty()){
-			scoreTxt = new Text("You have not played any games yet.");
-			grid.add(scoreTxt,1,2);
-			score.setTop(grid);
-			return grid;
-			
-		}
-		*/
 		//limited to last 20 scores shown
 		for(int i=0;i<20;i++){
 			//make this use list instead of temp
 			scoreTxt =new Text("Temp"+ i);
 			grid.add(scoreTxt,1,i+2);
 			difficultyTxt = new Text("Dif Temp"+i);
-			grid .add(difficultyTxt,5,i+2);
+			grid.add(difficultyTxt,5,i+2);
 			
 		}
 		score.setTop(grid);
-		return grid;
-		
+		return;
+		}
+
+		public Node CreateGrid(int i) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
-	public void handle(ActionEvent t) {
+/*	public void handle(ActionEvent t) {
 		BorderPane border = new BorderPane();
 		
 		Stage stage = new Stage();
@@ -145,9 +199,7 @@ public class ScoreBoardController{
 		//Center Pane
         //adds Gridpane to center of BorderPane
         border.setCenter(addGridPane());
-
-
        
     }
-	
+	*/
 }

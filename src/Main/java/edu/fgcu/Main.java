@@ -19,13 +19,19 @@ import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 
+
 public class Main extends Application {
 
     private ArrayList<ScaleTransition> scaleTransition;
     private static GameController gameController;
+    private static ScoreBoardController scoreBoardController;
     
     public static GameController getGameController(){
     	return gameController;
+    }
+    
+    public static ScoreBoardController getScoreBoardController(){
+    	return scoreBoardController;
     }
 
 
@@ -39,15 +45,16 @@ public class Main extends Application {
     	//final BorderPane scorePane = new BorderPane();
         Group gameGroup = new Group();
         root.setCenter(gameGroup);
-
+        
     	gameController = new GameController(root);
+    	scoreBoardController = new ScoreBoardController(root);
     	primaryStage.setTitle("Bubble Popper");
     	primaryStage.setResizable(false);
     	primaryStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
     	primaryStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
     	Scene scene = new Scene(root);
     	primaryStage.setScene(scene);
-    	//scene.setFill(Color.BLACK);
+    	/*
     	ToolBar toolbar = new ToolBar();
     	ChoiceBox difficulties = new ChoiceBox();
     	Button scoreBoardBtn = new Button("Score Board");
@@ -71,13 +78,15 @@ public class Main extends Application {
     	        Scene scoreScene = new Scene(scorePane);
     	        scoreStage.setScene(scoreScene);
     	        scoreStage.centerOnScreen();
-    	        scorePane.setCenter(ScoreBoardController.addGridPane());
+    	        scorePane.setCenter();
     	        scoreStage.show();
     	        
     	    }
     		});
+    		*/
         primaryStage.show();
-        gameController.changeState(1);
+        scoreBoardController.createToolBar(1);
+        //gameController.changeState(1);
 
     }
     
