@@ -20,7 +20,7 @@ public class ScoreBoardController{
 	private int highScore = 0;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
-	private ObservableList<Scores> allScores; //Store all scores here
+	private static ObservableList<Scores> allScores; //Store all scores here
 	
 	
 	//class to create object for allScores list
@@ -86,7 +86,8 @@ public class ScoreBoardController{
 	}
 	
 	//GridPane to display the scores in one column and difficulty in another
-	public GridPane addGridPane(){
+	public static GridPane addGridPane(){
+		BorderPane score = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
@@ -107,9 +108,10 @@ public class ScoreBoardController{
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(difficultyHeader, 2, 1); //column 3, row 2
 		
-		
+		score.setCenter(grid);
 		//Checking if list is empty
 		//Have default message display if yes
+		/*
 		if(allScores.isEmpty()){
 			scoreTxt = new Text("You have not played any games yet.");
 			grid.add(scoreTxt,1,1);
@@ -123,7 +125,7 @@ public class ScoreBoardController{
 			scoreTxt =new Text("Temp");
 			grid.add(scoreTxt,1,i+2);
 		}
-		
+		*/
 		return grid;
 		
 	}
