@@ -8,7 +8,6 @@ import java.io.File;
 public class GifCreator  {
     private File Gif;
     private String dir;
-
     public GifCreator(){
     }
 

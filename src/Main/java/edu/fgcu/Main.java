@@ -5,6 +5,9 @@ import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -39,6 +42,12 @@ public class Main extends Application {
     	Scene scene = new Scene(root);
     	primaryStage.setScene(scene);
     	//scene.setFill(Color.BLACK);
+    	ToolBar toolbar = new ToolBar();
+    	ChoiceBox difficulties = new ChoiceBox();
+    	difficulties.getItems().addAll("Easy","Normal","Hard");
+    	toolbar.getItems().add(new Button("Score Board"));
+    	toolbar.getItems().add(difficulties);
+    	root.setTop(toolbar);
     	//Button button = new Button("All Scores");
         primaryStage.show();
        gameController.changeState(1);
