@@ -37,7 +37,8 @@ public class Level extends Pane {
     private Rectangle scoreRectangle;
     private Button scoreButton;
     private int difficulty;
-    private Timeline timeline;
+    private Timeline growTimeline;
+    private Timeline spawnTimeline;
     private AnimationTimer timer;
     private static final GameController gameController = Main.getGameController();
     private Group myGroup;
@@ -82,9 +83,11 @@ public class Level extends Pane {
     }
 
     private void initializeLevelTimeline() {
-        timeline = new Timeline();
+        growTimeline = new Timeline();
+        spawnTimeline = new Timeline();
         final StackPane tempPane;
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        spawnTimeline.setCycleCount(Timeline.INDEFINITE);
+        growTimeline.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf;
         KeyFrame kf2;
         kf = new KeyFrame(Duration.seconds(difficulty), new EventHandler<ActionEvent>() {
@@ -114,8 +117,8 @@ public class Level extends Pane {
 
             }
         });
-
-        timeline.getKeyFrames().addAll(kf,kf2);
+        spawnTimeline.getKeyFrames().add(kf);
+        growTimeline.getKeyFrames().add(kf2);
     }
 
     public void startGif() {
@@ -209,14 +212,15 @@ public class Level extends Pane {
     }
 
     public void play() {
-        timeline.play();
+        growTimeline.play();
+        spawnTimeline.play();
 //        timer.start();
     }
 
 
     public void stop() {
-        timeline.stop();
-        timer.stop();
+        growTimeline.stop();
+        spawnTimeline.stop();
     }
 
 
@@ -272,7 +276,8 @@ public class Level extends Pane {
         for(int i = 0; i< circlesInProgress.size(); i++){
             circlesOn.add(circlesInProgress.get(i));
         }
-        timeline.playFromStart();
+        growTimeline.playFromStart();
+        spawnTimeline.playFromStart();
     }
 
 
