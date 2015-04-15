@@ -54,39 +54,9 @@ public class Main extends Application {
     	primaryStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
     	Scene scene = new Scene(root);
     	primaryStage.setScene(scene);
-    	/*
-    	ToolBar toolbar = new ToolBar();
-    	ChoiceBox difficulties = new ChoiceBox();
-    	Button scoreBoardBtn = new Button("Score Board");
-    	difficulties.getItems().addAll("Easy","Normal","Hard");
-    	final Label label = new Label();
-    	toolbar.getItems().add(scoreBoardBtn);
-    	toolbar.getItems().add(difficulties);
-    	toolbar.getItems().add(label);
-    	root.setTop(toolbar);
-    	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
-    	    public void handle(ActionEvent e) {
-    	        label.setText("Accepted");
-    	        final Stage scoreStage = new Stage();
-    	        BorderPane scorePane = new BorderPane();
-    	        Group rootGroup = new Group();
-    	        scorePane.setCenter(rootGroup);
-    	        scoreStage.setTitle("Score Board");
-    	        scoreStage.setResizable(false);
-    	        scoreStage.setWidth(Configurations.SCORE_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
-    	        scoreStage.setHeight(Configurations.SCORE_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
-    	        Scene scoreScene = new Scene(scorePane);
-    	        scoreStage.setScene(scoreScene);
-    	        scoreStage.centerOnScreen();
-    	        scorePane.setCenter();
-    	        scoreStage.show();
-    	        
-    	    }
-    		});
-    		*/
         primaryStage.show();
         scoreBoardController.createToolBar(1);
-        //gameController.changeState(1);
+        gameController.changeState(1);
 
     }
     
