@@ -92,5 +92,4 @@ public class GameControllerTest {
 		gameController.endGame();
 		assertNull(root.getCenter());
 	}
-
 }
