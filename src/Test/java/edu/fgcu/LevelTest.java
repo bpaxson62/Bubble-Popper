@@ -59,8 +59,6 @@ import static org.junit.Assert.assertTrue;
 		Circle myCircle = new Circle(Configurations.radius);
 		assertNotNull(myCircle);
 		assertTrue(Configurations.radius==myCircle.getRadius());
-
-
 	}
 	
 	@Test
