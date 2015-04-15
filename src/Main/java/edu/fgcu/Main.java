@@ -66,8 +66,8 @@ public class Main extends Application {
     	        scorePane.setCenter(rootGroup);
     	        scoreStage.setTitle("Score Board");
     	        scoreStage.setResizable(false);
-    	        scoreStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
-    	        scoreStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
+    	        scoreStage.setWidth(Configurations.SCORE_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
+    	        scoreStage.setHeight(Configurations.SCORE_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
     	        Scene scoreScene = new Scene(scorePane);
     	        scoreStage.setScene(scoreScene);
     	        scoreStage.centerOnScreen();

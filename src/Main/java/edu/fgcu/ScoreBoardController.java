@@ -1,5 +1,6 @@
 package edu.fgcu;
 
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Group;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -89,43 +91,47 @@ public class ScoreBoardController{
 	public static GridPane addGridPane(){
 		BorderPane score = new BorderPane();
 		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(0,10,0,10));
+		grid.setPadding(new Insets(10,10,10,10));
 		Text scoreTxt;
 		Text difficultyTxt;
 		//Setting Top grid headers and Title
 		//Left column is scores, right is difficulty
 		Text scoreTitle = new Text("All Scores");
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
-		grid.add(scoreTitle,1,0); //column 2, row 1
-		
+		//score.setTop(scoreTitle);
+		grid.add(scoreTitle,3,0); //column 2, row 1
 		Text scoreHeader = new Text("Score");
 		scoreHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(scoreHeader, 1, 1); //column 2, row 2
-		
 		Text difficultyHeader = new Text("Difficulty");
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
-		grid.add(difficultyHeader, 2, 1); //column 3, row 2
+		grid.add(difficultyHeader, 5, 1); //column 3, row 2
 		
-		score.setCenter(grid);
+		//score.setCenter(grid);
 		//Checking if list is empty
 		//Have default message display if yes
 		/*
 		if(allScores.isEmpty()){
 			scoreTxt = new Text("You have not played any games yet.");
-			grid.add(scoreTxt,1,1);
+			grid.add(scoreTxt,1,2);
+			score.setTop(grid);
 			return grid;
 			
 		}
-		
+		*/
 		//limited to last 20 scores shown
 		for(int i=0;i<20;i++){
 			//make this use list instead of temp
-			scoreTxt =new Text("Temp");
+			scoreTxt =new Text("Temp"+ i);
 			grid.add(scoreTxt,1,i+2);
+			difficultyTxt = new Text("Dif Temp"+i);
+			grid .add(difficultyTxt,5,i+2);
+			
 		}
-		*/
+		score.setTop(grid);
 		return grid;
 		
 	}
