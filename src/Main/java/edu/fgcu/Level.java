@@ -1,5 +1,6 @@
 package edu.fgcu;
 
+import edu.fgcu.utilities.Utilities;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -7,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -58,9 +61,9 @@ public class Level extends Pane {
         } else if (backGround == 3) {
             myBackGround = "4.jpg";
         }
-        difficulty =Difficulty;
+        difficulty = Difficulty;
         difficulty = 0;
-        File picture = new File(System.getProperty("user.dir") + "\\src\\Media\\"+myBackGround);
+        File picture = new File(System.getProperty("user.dir") + "\\src\\Media\\" + myBackGround);
 
         InputStream is = null;
         try {
@@ -82,6 +85,7 @@ public class Level extends Pane {
         initializeLevel();
     }
 
+
     private void initializeLevelTimeline() {
         growTimeline = new Timeline();
         spawnTimeline = new Timeline();
@@ -90,26 +94,44 @@ public class Level extends Pane {
         growTimeline.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf;
         KeyFrame kf2;
-        kf = new KeyFrame(Duration.seconds(difficulty), new EventHandler<ActionEvent>() {
+        kf = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                for (int i = 0; i < circlesOn.size(); i++) {
+//                for (int i = 0; i < circlesOn.size(); i++) {
 //                    checkBounds(circlesOn.get(i));
 //                    circleIntersection(circlesOn.get(i));
 //                    circlesOn.get(i).setRadius(circlesOn.get(i).getRadius() + 1);
-                    circlesOn.get(i).setLayoutX(300);
-                    circlesOn.get(i).setLayoutY(300);
+                System.out.println("hi");
+
+                boolean isSafe = false;
+                Circle myCircle = circlesOn.pop();
+                myCircle.setVisible(false);
+                while (isSafe != true) {
+
+                    int boundX = Utilities.randInt(0, (int) getBoundsInParent().getMaxX());
+                    int boundY = Utilities.randInt(0, (int) getBoundsInParent().getMaxY());
+                    myCircle.setCenterX(boundX);
+                    myCircle.setLayoutY(boundY);
+                    isSafe = circleIntersection(myCircle, true);
+                }
+                myCircle.setVisible(true);
+                circlesOn.get(i).setLayoutX(getBoundsInParent().getMaxX() / 2);
+                circlesOn.get(i).setLayoutY(getBoundsInParent().getMaxY() / 2);
+
+
 //                    circlesOn.get(i).pane.setTranslateX(circlesOn.get(i).pane.getTranslateX() + circlesOn.get(i).directionX * 5);
 //                    circlesOn.get(i).pane.setTranslateY(circlesOn.get(i).pane.getTranslateY() + circlesOn.get(i).directionY * 5);
-                }
+//                }
 
             }
         });
-        kf2 = new KeyFrame(Duration.millis(.0001), new EventHandler<ActionEvent>() {
+        kf2 = new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 for (int i = 0; i < circlesOn.size(); i++) {
                     checkBounds(circlesOn.get(i));
-                    circleIntersection(circlesOn.get(i));
-                    circlesOn.get(i).setRadius(circlesOn.get(i).getRadius() + 5);
+//                    circleIntersection(circlesOn.get(i));
+//                    System.out.println(circlesOn.get(i).getBoundsInParent().getMaxY());
+//                    System.out.println(circlesOn.get(i).getBoundsInParent().getMaxX());
+                    circlesOn.get(i).setRadius(circlesOn.get(i).getRadius() + 1);
 
 //                    circlesOn.get(i).pane.setTranslateX(circlesOn.get(i).pane.getTranslateX() + circlesOn.get(i).directionX * 5);
 //                    circlesOn.get(i).pane.setTranslateY(circlesOn.get(i).pane.getTranslateY() + circlesOn.get(i).directionY * 5);
@@ -128,7 +150,7 @@ public class Level extends Pane {
 //        circle.setFill(Color.ORANGE);
     }
 
-    public void stopGif(){
+    public void stopGif() {
 
     }
 
@@ -139,13 +161,23 @@ public class Level extends Pane {
         circlesComplete = new ArrayList<Circle>();
         for (int i = 0; i < circleNum; i++) {
             Circle myCircle = new Circle(Configurations.radius);
+            Glow myGlow = new Glow();
+            myGlow.setLevel(.08);
+
+            myCircle.setEffect(new Lighting());
+//            myCircle.setEffect(myGlow);
+//            Lighting lighting = new Lighting();
+//            Light myLight = new Light();
+//            lighting.setLight(new L);
+//            myCircle.setEffect(new Lighting());
 //            Ball myBall = new Ball();
             final int myIndex = i;
             myAction = new EventHandler<MouseEvent>() {
 
                 public void handle(MouseEvent event) {
-                        incrementScore();
-                        getChildren().remove(circlesOn.get(myIndex));
+                    incrementScore();
+                    circlesComplete.add(circlesInProgress.get(myIndex));
+                    getChildren().remove(circlesInProgress.get(myIndex));
                     System.out.println("hello");
 //                    if (answer.equals(Integer.parseInt(circlesOn.get(myIndex).myText.getText()))) {
 ////                        addScore();
@@ -163,8 +195,6 @@ public class Level extends Pane {
             myCircle.addEventHandler(MouseEvent.MOUSE_PRESSED, myAction);
             circlesOn.add(i, myCircle);
         }
-
-
     }
 
     public void initializeLevel() {
@@ -202,6 +232,7 @@ public class Level extends Pane {
     private void incrementScore() {
 
     }
+
     private void decrementScore() {
 
     }
@@ -224,17 +255,16 @@ public class Level extends Pane {
     }
 
 
-
-    public void circleIntersection(Circle myBall) {
+    public boolean circleIntersection(Circle myBall, boolean peek) {
         Shape block = myBall;
-
+        boolean safe = true;
         for (final Circle myShape : circlesOn) {
             if (myShape != block) {
 
 
                 Shape intersect = Shape.intersect(block, myShape);
 
-                if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 ) {
+                if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
                     circlesInProgress.remove(myBall);
                     circlesInProgress.remove(myShape);
                     circlesComplete.add(myBall);
@@ -242,9 +272,12 @@ public class Level extends Pane {
                     decrementScore();
                     decrementScore();
 
+                } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
+                    safe = false;
                 }
             }
         }
+        return safe;
     }
 
     public void checkBounds(Circle myBall) {
@@ -252,28 +285,28 @@ public class Level extends Pane {
         if ball hits walls
          */
 
-        if(myBall.getBoundsInParent().getMinX() <= getBoundsInParent().getMinX()){
+        if (myBall.getBoundsInParent().getMinX() <= getBoundsInParent().getMinX()) {
             decrementScore();
             circlesInProgress.remove(myBall);
             circlesComplete.add(myBall);
-        }else if(myBall.getBoundsInParent().getMaxX() >= getBoundsInParent().getMaxX()){
+        } else if (myBall.getBoundsInParent().getMaxX() >= getBoundsInParent().getMaxX()) {
             decrementScore();
             circlesInProgress.remove(myBall);
             circlesComplete.add(myBall);
-        }else if(myBall.getBoundsInParent().getMinY() <= getBoundsInParent().getMinY()){
+        } else if (myBall.getBoundsInParent().getMinY() <= getBoundsInParent().getMinY()) {
             decrementScore();
             circlesInProgress.remove(myBall);
             circlesComplete.add(myBall);
-        }else if(myBall.getBoundsInParent().getMaxY() >= getBoundsInParent().getMaxY()){
+        } else if (myBall.getBoundsInParent().getMaxY() >= getBoundsInParent().getMaxY()) {
             decrementScore();
             circlesInProgress.remove(myBall);
             circlesComplete.add(myBall);
         }
     }
 
-    public void resetGame(){
+    public void resetGame() {
 
-        for(int i = 0; i< circlesInProgress.size(); i++){
+        for (int i = 0; i < circlesInProgress.size(); i++) {
             circlesOn.add(circlesInProgress.get(i));
         }
         growTimeline.playFromStart();
@@ -285,7 +318,7 @@ public class Level extends Pane {
 
 class Ball {
 
-    public Ball( Circle myCircle/*, int directionY, int directionX, Text myText*/) {
+    public Ball(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
         ball = myCircle;
         this.myText = myText;
     }
