@@ -25,15 +25,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * Created by brian on 3/12/2015.
  */
 public class Level extends Pane {
-    public Stack<Circle> circlesOn;
-    public ArrayList<Circle> circlesInProgress;
-    public ArrayList<Circle> circlesComplete;
+    public ArrayList<Bubble> myBubbles;
+//    public ArrayList<Bubble> circlesInProgress;
+//    public ArrayList<Bubble> circlesComplete;
     private Integer i = 0;
     private Integer answer = 0;
     private Text myEquationText;
@@ -96,51 +95,70 @@ public class Level extends Pane {
         KeyFrame kf2;
         kf = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-//                for (int i = 0; i < circlesOn.size(); i++) {
-//                    checkBounds(circlesOn.get(i));
-//                    circleIntersection(circlesOn.get(i));
-//                    circlesOn.get(i).setRadius(circlesOn.get(i).getRadius() + 1);
+//                for (int i = 0; i < myBubbles.size(); i++) {
+//                    checkBounds(myBubbles.get(i));
+//                    circleIntersection(myBubbles.get(i));
+//                    myBubbles.get(i).setRadius(myBubbles.get(i).getRadius() + 1);
                 System.out.println("hi");
 
                 boolean isSafe = false;
-                Circle myCircle = circlesOn.pop();
-                myCircle.setVisible(false);
+//                Bubble myCircle = myBubbles.pop();
+                Bubble myBubble = null;
+                boolean find = false;
+               for(int i  = 0; i< myBubbles.size(); i++){
+                   if(myBubbles.get(i).stage == 0){
+                       myBubble = myBubbles.get(i);
+                       find=true;
+                   }
+               }
+                if(find == false){
+                    stopGame();
+                }
+
+                myBubble.bubble.setVisible(false);
                 while (isSafe != true) {
 
                     int boundX = Utilities.randInt(0, (int) getBoundsInParent().getMaxX());
                     int boundY = Utilities.randInt(0, (int) getBoundsInParent().getMaxY());
-                    myCircle.setCenterX(boundX);
-                    myCircle.setLayoutY(boundY);
-                    isSafe = circleIntersection(myCircle, true);
+                    myBubble.bubble.setCenterX(boundX);
+                    myBubble.bubble.setLayoutY(boundY);
+                    isSafe = circleIntersection(myBubble, true);
                 }
-                myCircle.setVisible(true);
-                circlesOn.get(i).setLayoutX(getBoundsInParent().getMaxX() / 2);
-                circlesOn.get(i).setLayoutY(getBoundsInParent().getMaxY() / 2);
+                myBubble.activate();
+                myBubble.bubble.setVisible(true);
+//                myBubbles.get(i).setLayoutX(getBoundsInParent().getMaxX() / 2);
+//                myBubbles.get(i).setLayoutY(getBoundsInParent().getMaxY() / 2);
 
 
-//                    circlesOn.get(i).pane.setTranslateX(circlesOn.get(i).pane.getTranslateX() + circlesOn.get(i).directionX * 5);
-//                    circlesOn.get(i).pane.setTranslateY(circlesOn.get(i).pane.getTranslateY() + circlesOn.get(i).directionY * 5);
+//                    myBubbles.get(i).pane.setTranslateX(myBubbles.get(i).pane.getTranslateX() + myBubbles.get(i).directionX * 5);
+//                    myBubbles.get(i).pane.setTranslateY(myBubbles.get(i).pane.getTranslateY() + myBubbles.get(i).directionY * 5);
 //                }
 
             }
         });
         kf2 = new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                for (int i = 0; i < circlesOn.size(); i++) {
-                    checkBounds(circlesOn.get(i));
-//                    circleIntersection(circlesOn.get(i));
-//                    System.out.println(circlesOn.get(i).getBoundsInParent().getMaxY());
-//                    System.out.println(circlesOn.get(i).getBoundsInParent().getMaxX());
-                    circlesOn.get(i).setRadius(circlesOn.get(i).getRadius() + 1);
+                try {
+                    for (int i = 0; i < myBubbles.size(); i++) {
+                        if(myBubbles.get(i).stage ==1){
+                            checkBounds(myBubbles.get(i));
+                            myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + 1);
 
-//                    circlesOn.get(i).pane.setTranslateX(circlesOn.get(i).pane.getTranslateX() + circlesOn.get(i).directionX * 5);
-//                    circlesOn.get(i).pane.setTranslateY(circlesOn.get(i).pane.getTranslateY() + circlesOn.get(i).directionY * 5);
+                        }
+
+                        //                    circleIntersection(myBubbles.get(i));
+                        //                    System.out.println(myBubbles.get(i).getBoundsInParent().getMaxY());
+                        //                    System.out.println(myBubbles.get(i).getBoundsInParent().getMaxX());
+
+                        //                    myBubbles.get(i).pane.setTranslateX(myBubbles.get(i).pane.getTranslateX() + myBubbles.get(i).directionX * 5);
+                        //                    myBubbles.get(i).pane.setTranslateY(myBubbles.get(i).pane.getTranslateY() + myBubbles.get(i).directionY * 5);
+                    }
+                } catch (IndexOutOfBoundsException e) {
                 }
-
             }
         });
         spawnTimeline.getKeyFrames().add(kf);
-        growTimeline.getKeyFrames().add(kf2);
+        growTimeline.getKeyFrames().addAll(kf2);
     }
 
     public void startGif() {
@@ -156,15 +174,15 @@ public class Level extends Pane {
 
     public void populateCircles(int circleNum) {
         EventHandler<MouseEvent> myAction;
-        circlesOn = new Stack<Circle>();
-        circlesInProgress = new ArrayList<Circle>();
-        circlesComplete = new ArrayList<Circle>();
+        myBubbles = new ArrayList<Bubble>();
+//        circlesInProgress = new ArrayList<Bubble>();
+//        circlesComplete = new ArrayList<Bubble>();
         for (int i = 0; i < circleNum; i++) {
-            Circle myCircle = new Circle(Configurations.radius);
+            Bubble myCircle = new Bubble(new Circle(Configurations.radius));
             Glow myGlow = new Glow();
             myGlow.setLevel(.08);
 
-            myCircle.setEffect(new Lighting());
+            myCircle.bubble.setEffect(new Lighting());
 //            myCircle.setEffect(myGlow);
 //            Lighting lighting = new Lighting();
 //            Light myLight = new Light();
@@ -176,30 +194,35 @@ public class Level extends Pane {
 
                 public void handle(MouseEvent event) {
                     incrementScore();
-                    circlesComplete.add(circlesInProgress.get(myIndex));
-                    getChildren().remove(circlesInProgress.get(myIndex));
+
+                    myBubbles.get(myIndex).deactivate();
+
+//
+//                    circlesComplete.add(circlesInProgress.get(myIndex));
+//                    getChildren().remove(circlesInProgress.get(myIndex));
                     System.out.println("hello");
-//                    if (answer.equals(Integer.parseInt(circlesOn.get(myIndex).myText.getText()))) {
+//                    if (answer.equals(Integer.parseInt(myBubbles.get(myIndex).myText.getText()))) {
 ////                        addScore();
 //
 //                    } else {
-////                        circlesOn.get(myIndex).ball.setFill(Color.RED);
+////                        myBubbles.get(myIndex).ball.setFill(Color.RED);
 ////                        subtractScore();
 //                    }
 
                     //}
                 }
             };
-            myCircle.setStyle(Configurations.circleStyle);
+            myCircle.bubble.setStyle(Configurations.circleStyle);
 
-            myCircle.addEventHandler(MouseEvent.MOUSE_PRESSED, myAction);
-            circlesOn.add(i, myCircle);
+            myCircle.bubble.addEventHandler(MouseEvent.MOUSE_PRESSED, myAction);
+            myBubbles.add(i, myCircle);
         }
     }
 
     public void initializeLevel() {
-        Random rand = new Random();
-        getChildren().addAll(circlesOn);
+        for(Bubble bubble: myBubbles){
+            getChildren().add(bubble.bubble);
+        }
         initializeLevelTimeline();
         play();
 
@@ -217,11 +240,11 @@ public class Level extends Pane {
 //        KeyFrame kf;
 //        kf = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
 //            public void handle(ActionEvent event) {
-//                for (int i = 0; i < circlesOn.size(); i++) {
-//                    checkBounds(circlesOn.get(i));
-//                    circleIntersection(circlesOn.get(i));
-//                    circlesOn.get(i).setTranslateX(circlesOn.get(i).getTranslateX() + circlesOn.get(i).directionX * 5);
-//                    circlesOn.get(i).setTranslateY(circlesOn.get(i).getTranslateY() + circlesOn.get(i).directionY * 5);
+//                for (int i = 0; i < myBubbles.size(); i++) {
+//                    checkBounds(myBubbles.get(i));
+//                    circleIntersection(myBubbles.get(i));
+//                    myBubbles.get(i).setTranslateX(myBubbles.get(i).getTranslateX() + myBubbles.get(i).directionX * 5);
+//                    myBubbles.get(i).setTranslateY(myBubbles.get(i).getTranslateY() + myBubbles.get(i).directionY * 5);
 //                }
 //
 //            }
@@ -255,59 +278,67 @@ public class Level extends Pane {
     }
 
 
-    public boolean circleIntersection(Circle myBall, boolean peek) {
-        Shape block = myBall;
+    public boolean circleIntersection(Bubble myBall, boolean peek) {
+        Circle block = myBall.bubble;
         boolean safe = true;
-        for (final Circle myShape : circlesOn) {
-            if (myShape != block) {
+        for (final Bubble myShape : myBubbles) {
+            if (myShape.bubble != block) {
 
 
-                Shape intersect = Shape.intersect(block, myShape);
+                Shape intersect = Shape.intersect(block, myShape.bubble);
 
                 if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
-                    circlesInProgress.remove(myBall);
-                    circlesInProgress.remove(myShape);
-                    circlesComplete.add(myBall);
-                    circlesComplete.add(myShape);
+
+                    myShape.deactivate();
+                    myBall.deactivate();
                     decrementScore();
                     decrementScore();
 
                 } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
+
                     safe = false;
                 }
+
+
             }
         }
         return safe;
     }
 
-    public void checkBounds(Circle myBall) {
+    public void checkBounds(Bubble myBall) {
         /*
         if ball hits walls
          */
 
-        if (myBall.getBoundsInParent().getMinX() <= getBoundsInParent().getMinX()) {
+        if (myBall.bubble.getBoundsInParent().getMinX() <= getBoundsInParent().getMinX()) {
             decrementScore();
-            circlesInProgress.remove(myBall);
-            circlesComplete.add(myBall);
-        } else if (myBall.getBoundsInParent().getMaxX() >= getBoundsInParent().getMaxX()) {
+            myBall.deactivate();
+        } else if (myBall.bubble.getBoundsInParent().getMaxX() >= getBoundsInParent().getMaxX()) {
             decrementScore();
-            circlesInProgress.remove(myBall);
-            circlesComplete.add(myBall);
-        } else if (myBall.getBoundsInParent().getMinY() <= getBoundsInParent().getMinY()) {
+            myBall.deactivate();
+        } else if (myBall.bubble.getBoundsInParent().getMinY() <= getBoundsInParent().getMinY()) {
             decrementScore();
-            circlesInProgress.remove(myBall);
-            circlesComplete.add(myBall);
-        } else if (myBall.getBoundsInParent().getMaxY() >= getBoundsInParent().getMaxY()) {
+            myBall.deactivate();
+        } else if (myBall.bubble.getBoundsInParent().getMaxY() >= getBoundsInParent().getMaxY()) {
             decrementScore();
-            circlesInProgress.remove(myBall);
-            circlesComplete.add(myBall);
+            myBall.deactivate();
         }
     }
 
-    public void resetGame() {
 
-        for (int i = 0; i < circlesInProgress.size(); i++) {
-            circlesOn.add(circlesInProgress.get(i));
+    public void stopGame() {
+
+        for (int i = 0; i < myBubbles.size(); i++) {
+            myBubbles.get(i).reset();
+        }
+        growTimeline.stop();
+        spawnTimeline.stop();
+    }
+
+    public void startGame() {
+
+        for (int i = 0; i < myBubbles.size(); i++) {
+            myBubbles.get(i).reset();
         }
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
@@ -316,16 +347,41 @@ public class Level extends Pane {
 
 }
 
-class Ball {
+class Bubble {
 
-    public Ball(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
-        ball = myCircle;
+
+    public Bubble(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
+        bubble = myCircle;
         this.myText = myText;
+        stage=0;
     }
 
+
+    public enum status{
+        STAGING, PLAYING, FINISHED
+    }
+
+    public void activate(){
+        stage = 1;
+        bubble.setVisible(true);
+    }
+
+    public void deactivate(){
+        stage = 2;
+        bubble.setVisible(false);
+    }
+    public void reset(){
+        stage = 0;
+        bubble.setVisible(false);
+        bubble.setRadius(25);
+    }
+
+
+    int stage;
+    Timeline myBubble;
     boolean activeBound;
     public StackPane pane;
-    Circle ball;
+    Circle bubble;
     int directionY;
     int directionX;
     Text myText;

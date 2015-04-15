@@ -86,10 +86,10 @@ import static org.junit.Assert.assertTrue;
 		//Test for when bubble hits a wall
 		//Bubbble should pop and user loses life
 		testLevel = new Level(1);
-		Circle myCircle = new Circle(Configurations.radius);
-		testLevel.getChildren().add(myCircle);
-		myCircle.setLayoutY(0);
-		myCircle.setLayoutX(0);
+		Bubble myCircle = new Bubble(new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		myCircle.bubble.setLayoutY(0);
+		myCircle.bubble.setLayoutX(0);
 		testLevel.checkBounds(myCircle);
 
 		assertTrue(testLevel.getChildren().contains(myCircle));
@@ -101,16 +101,16 @@ import static org.junit.Assert.assertTrue;
 		//Test for when bubbble hits another bubble
 		//Both bubbles should pop and user loses life twice
 		testLevel = new Level(1);
-		Circle myCircle = new Circle(Configurations.radius);
-		Circle myCircle2 = new Circle(Configurations.radius);
-		testLevel.getChildren().add(myCircle);
-		myCircle.setLayoutY(200);
-		myCircle.setLayoutX(200);
-		myCircle2.setLayoutY(200);
-		myCircle2.setLayoutX(200);
-		testLevel.circlesOn.add(myCircle2);
-		testLevel.circleIntersection(myCircle);
-		assertTrue(testLevel.circlesComplete.contains(myCircle));
+		Bubble myCircle = new Bubble( new Circle(Configurations.radius));
+		Bubble myCircle2 = new Bubble( new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		myCircle.bubble.setLayoutY(200);
+		myCircle.bubble.setLayoutX(200);
+		myCircle2.bubble.setLayoutY(200);
+		myCircle2.bubble.setLayoutX(200);
+		testLevel.myBubbles.add(myCircle2);
+		testLevel.circleIntersection(myCircle, false);
+		assertTrue(myCircle.stage == 2);
 
 		assertTrue(testLevel.getChildren().contains(myCircle));
 	}
