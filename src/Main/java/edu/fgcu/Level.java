@@ -29,8 +29,8 @@ import java.util.Stack;
  */
 public class Level extends Pane {
     public Stack<Circle> circlesOn;
-    private ArrayList<Circle> circlesInProgress;
-    private ArrayList<Circle> circlesComplete;
+    public ArrayList<Circle> circlesInProgress;
+    public ArrayList<Circle> circlesComplete;
     private Integer i = 0;
     private Integer answer = 0;
     private Text myEquationText;
@@ -133,6 +133,7 @@ public class Level extends Pane {
         EventHandler<MouseEvent> myAction;
         circlesOn = new Stack<Circle>();
         circlesInProgress = new ArrayList<Circle>();
+        circlesComplete = new ArrayList<Circle>();
         for (int i = 0; i < circleNum; i++) {
             Circle myCircle = new Circle(Configurations.radius);
 //            Ball myBall = new Ball();
@@ -220,7 +221,7 @@ public class Level extends Pane {
 
 
 
-    private void circleIntersection(Circle myBall) {
+    public void circleIntersection(Circle myBall) {
         Shape block = myBall;
 
         for (final Circle myShape : circlesOn) {
