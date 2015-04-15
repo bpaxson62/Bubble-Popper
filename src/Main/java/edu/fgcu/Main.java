@@ -3,13 +3,19 @@ package edu.fgcu;
 
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 
@@ -29,8 +35,8 @@ public class Main extends Application {
 
     @Override public void start(Stage primaryStage) throws Exception {
     	// This creates the basic window, commented out for the moment
-    	//This works, must remove init(primaryStage) to make it work
     	BorderPane root = new BorderPane();
+    	//final BorderPane scorePane = new BorderPane();
         Group gameGroup = new Group();
         root.setCenter(gameGroup);
 
@@ -44,13 +50,34 @@ public class Main extends Application {
     	//scene.setFill(Color.BLACK);
     	ToolBar toolbar = new ToolBar();
     	ChoiceBox difficulties = new ChoiceBox();
+    	Button scoreBoardBtn = new Button("Score Board");
     	difficulties.getItems().addAll("Easy","Normal","Hard");
-    	toolbar.getItems().add(new Button("Score Board"));
+    	final Label label = new Label();
+    	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
+    	toolbar.getItems().add(label);
     	root.setTop(toolbar);
-    	//Button button = new Button("All Scores");
+    	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
+    	    public void handle(ActionEvent e) {
+    	        label.setText("Accepted");
+    	        final Stage scoreStage = new Stage();
+    	        BorderPane scorePane = new BorderPane();
+    	        Group rootGroup = new Group();
+    	        scorePane.setCenter(rootGroup);
+    	        scoreStage.setTitle("Score Board");
+    	        scoreStage.setResizable(false);
+    	        scoreStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
+    	        scoreStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
+    	        Scene scoreScene = new Scene(scorePane);
+    	        scoreStage.setScene(scoreScene);
+    	        scoreStage.centerOnScreen();
+    	        scorePane.setCenter(ScoreBoardController.addGridPane());
+    	        scoreStage.show();
+    	        
+    	    }
+    		});
         primaryStage.show();
-       gameController.changeState(1);
+        gameController.changeState(1);
 
     }
     
