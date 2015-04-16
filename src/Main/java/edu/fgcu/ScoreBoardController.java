@@ -26,7 +26,7 @@ import java.util.List;
 public class ScoreBoardController extends Parent{
 
 	//private Group scoreBoard;
-	private BorderPane root;
+	private static BorderPane root;
 	private Group myGroup;
 	private int highScore = 0;
 	private int score = 0;
@@ -34,6 +34,8 @@ public class ScoreBoardController extends Parent{
 	private ObservableList<Scores> allScores; //Store all scores here
 	private static GridPane grid;
 	private static CreateGridPane createGridPane;
+	private static GameController gameController;
+	private static Level level;
 	//static ScoreBoardController outer = new ScoreBoardController(root);
 	
 	//class to create object for allScores list
@@ -43,6 +45,7 @@ public class ScoreBoardController extends Parent{
 		
 		public Scores(int scores, int difficulty){
 			this.scores=scores;
+			
 			switch(difficulty){
 			case 1: this.difficulty = Configurations.EASY_DIFFICULTY;
 				break;
@@ -54,12 +57,22 @@ public class ScoreBoardController extends Parent{
 		}
 	}
 	
+	public static GameController gameController(){
+		return gameController;
+	}
+	
+	public static Level level(){
+		
+		return GameController.mylevel;
+	}
+	
 	 public static CreateGridPane getGridPane(){
 	    	return createGridPane;
 	    }
 	
 	public ScoreBoardController(BorderPane scoreBoard){
 		this.root = scoreBoard;
+		this.level = level();
 	}
 
 	public void createToolBar(int i){
@@ -67,17 +80,31 @@ public class ScoreBoardController extends Parent{
 		ToolBar toolbar = new ToolBar();
     	ChoiceBox difficulties = new ChoiceBox();
     	Button scoreBoardBtn = new Button("Score Board");
+    	final Button startStopBtn = new Button("Start");
     	difficulties.getItems().addAll("Easy","Normal","Hard");
+    	difficulties.getSelectionModel().selectFirst();
     	final Label label = new Label();
+    	final Label scoreTxt = new Label();
+    	final Label scoreValue = new Label();
+    	final Label lifePointsTxt = new Label();
+    	final Label lifePointsValue = new Label();
+    	scoreTxt.setText("Score:");
+    	scoreValue.setText("0");
+    	lifePointsTxt.setText("HP:");
+    	lifePointsValue.setText(GameController.getLifePointsTxt());
     	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
-    	toolbar.getItems().add(label);
+    	toolbar.getItems().add(startStopBtn);
+    	toolbar.getItems().add(scoreTxt);
+    	toolbar.getItems().add(scoreValue);
+    	toolbar.getItems().add(lifePointsTxt);
+    	toolbar.getItems().add(lifePointsValue);
     	root.setTop(toolbar);
     	
     	//handiling button press for scoreboard creation
     	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
     	    public void handle(ActionEvent e) {
-    	        label.setText("Accepted");
+    	        //label.setText("Accepted");
     	        final Stage scoreStage = new Stage();
     	        BorderPane scorePane = new BorderPane();
     	        Group rootGroup = new Group();
@@ -93,6 +120,20 @@ public class ScoreBoardController extends Parent{
     	        scorePane.setCenter(createGridPane.CreateGrid(1));
     	        scoreStage.show();
     	        
+    	    }
+    		});
+    	
+    	startStopBtn.setOnAction(new EventHandler<ActionEvent>() {
+    	    public void handle(ActionEvent e) {
+    	    	if(startStopBtn.getText()=="Start"){
+    	    		startStopBtn.setText("Stop");
+    	    		level.startGame();
+    	    	}
+    	    	
+    	    	else{
+    	    		startStopBtn.setText("Start");
+    	    		level.stopGame();
+    	    	}
     	    }
     		});
 		
@@ -155,7 +196,7 @@ public class ScoreBoardController extends Parent{
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
-		addScoreToList(2,2);
+		//addScoreToList(2,2);
 		//allScores.add(new Scores(3, 3));
 		
 		if(allScores == null){
@@ -185,7 +226,6 @@ public class ScoreBoardController extends Parent{
 		}
 
 		public Node CreateGrid(int i) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 	}

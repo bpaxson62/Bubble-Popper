@@ -268,6 +268,7 @@ public class Level extends Pane {
         growTimeline.play();
         spawnTimeline.play();
         collisionTimeline.stop();
+        
 //        timer.start();
     }
 
@@ -337,13 +338,13 @@ public class Level extends Pane {
     }
 
     public void startGame() {
-
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
         collisionTimeline.playFromStart();
+        gameController.gameStart();
     }
 
 

@@ -47,7 +47,7 @@ public class Main extends Application {
         root.setCenter(gameGroup);
         
     	gameController = new GameController(root);
-    	scoreBoardController = new ScoreBoardController(root);
+    	
     	primaryStage.setTitle("Bubble Popper");
     	primaryStage.setResizable(false);
     	primaryStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
@@ -55,8 +55,10 @@ public class Main extends Application {
     	Scene scene = new Scene(root);
     	primaryStage.setScene(scene);
         primaryStage.show();
-        scoreBoardController.createToolBar(1);
+        
         gameController.changeState(1);
+        scoreBoardController = new ScoreBoardController(root);
+        scoreBoardController.createToolBar(1);
 
     }
     

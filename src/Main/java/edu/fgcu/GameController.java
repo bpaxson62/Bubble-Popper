@@ -7,9 +7,10 @@ public class GameController{
 	
 	private BorderPane root; //Instance of scene game node
 	private int lifePoints;  //Users life points
+	private static String lifePointsTxt;
 	private int score; //Users Score
 	private int difficulty;
-	private Level level;
+	public static Level mylevel;
 	
 	public GameController(BorderPane game){
 		this.root = game;
@@ -28,6 +29,10 @@ public class GameController{
 		return lifePoints;
 	}
 	
+	public static String getLifePointsTxt(){
+		return lifePointsTxt;
+	}
+	
 	public int getDifficulty(){
 		return difficulty;
 	}
@@ -38,7 +43,7 @@ public class GameController{
 	
 	public void decreaseLifePoints(){
 		lifePoints--;
-		
+		lifePointsTxt = Integer.toString(lifePoints);
 		//If LifePOints hit zero, game is over
 		if(lifePoints==0){
 			endGame();
@@ -47,9 +52,10 @@ public class GameController{
 	
 	public void gameStart(){
 		lifePoints=10;
+		lifePointsTxt=Integer.toString(lifePoints);
 		score = 0;
 		difficulty = 1; //Need to make this set by user with default of 1(easy)
-		changeState(1);
+		//changeState(1);
 	}
 	
 	
@@ -64,8 +70,11 @@ public class GameController{
 	}
 
 	public void changeState(int i) {
-		Group myGroup = new Group();
-		root.setCenter(new Level(0));
+		if(mylevel != null){
+			mylevel = new Level(0);
+		}
+//		Group myGroup = new Group();
+		root.setCenter(mylevel);
 		//root.setCenter(myGroup);
 
 		//border.setCenter();
