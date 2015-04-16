@@ -45,7 +45,6 @@ public class ScoreBoardController extends Parent{
 		
 		public Scores(int scores, int difficulty){
 			this.scores=scores;
-			
 			switch(difficulty){
 			case 1: this.difficulty = Configurations.EASY_DIFFICULTY;
 				break;
