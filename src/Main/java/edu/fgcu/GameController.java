@@ -1,6 +1,5 @@
 package edu.fgcu;
 
-import javafx.scene.Group;
 import javafx.scene.layout.BorderPane;
 
 public class GameController{
@@ -10,10 +9,12 @@ public class GameController{
 	private static String lifePointsTxt;
 	private int score; //Users Score
 	private int difficulty;
-	public static Level mylevel;
+	public static Level myLevel;
 	
 	public GameController(BorderPane game){
 		this.root = game;
+		this.myLevel = new Level(0);
+		root.setCenter(myLevel);
 	}
 	
 	
@@ -70,13 +71,13 @@ public class GameController{
 	}
 
 	public void changeState(int i) {
-		if(mylevel != null){
-			mylevel = new Level(0);
-		}
 //		Group myGroup = new Group();
-		root.setCenter(mylevel);
+		if(i == 0){
+			myLevel.stopGame();
+		}else{
+			myLevel.startGame();
+		}
 		//root.setCenter(myGroup);
-
 		//border.setCenter();
 	}
 	
