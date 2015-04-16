@@ -31,7 +31,7 @@ import java.util.Random;
  */
 public class Level extends Pane {
     public ArrayList<Bubble> myBubbles;
-//    public ArrayList<Bubble> circlesInProgress;
+    //    public ArrayList<Bubble> circlesInProgress;
 //    public ArrayList<Bubble> circlesComplete;
     private Integer i = 0;
     private Integer answer = 0;
@@ -41,6 +41,7 @@ public class Level extends Pane {
     private int difficulty;
     private Timeline growTimeline;
     private Timeline spawnTimeline;
+    private Timeline collisionTimeline;
     private AnimationTimer timer;
     private static final GameController gameController = Main.getGameController();
     private Group myGroup;
@@ -88,77 +89,74 @@ public class Level extends Pane {
     private void initializeLevelTimeline() {
         growTimeline = new Timeline();
         spawnTimeline = new Timeline();
+        collisionTimeline = new Timeline();
+
         final StackPane tempPane;
         spawnTimeline.setCycleCount(Timeline.INDEFINITE);
         growTimeline.setCycleCount(Timeline.INDEFINITE);
+        collisionTimeline.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf;
         KeyFrame kf2;
+        KeyFrame kf3;
         kf = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-//                for (int i = 0; i < myBubbles.size(); i++) {
-//                    checkBounds(myBubbles.get(i));
-//                    circleIntersection(myBubbles.get(i));
-//                    myBubbles.get(i).setRadius(myBubbles.get(i).getRadius() + 1);
-                System.out.println("hi");
-
                 boolean isSafe = false;
-//                Bubble myCircle = myBubbles.pop();
                 Bubble myBubble = null;
                 boolean find = false;
-               for(int i  = 0; i< myBubbles.size(); i++){
-                   if(myBubbles.get(i).stage == 0){
-                       myBubble = myBubbles.get(i);
-                       find=true;
-                   }
-               }
-                if(find == false){
+                for (int i = 0; i < myBubbles.size(); i++) {
+                    if (myBubbles.get(i).stage == 0) {
+                        myBubble = myBubbles.get(i);
+                        find = true;
+                    }
+                }
+                if (find == false) {
                     stopGame();
+                } else {
+
+                    myBubble.deactivate();
+                    while (isSafe != true) {
+
+                        int boundX = Utilities.randInt(100, (int) getBoundsInParent().getMaxX() - 100);
+                        int boundY = Utilities.randInt(100, (int) getBoundsInParent().getMaxY() - 100);
+                        myBubble.bubble.setCenterX(boundX);
+                        myBubble.bubble.setLayoutY(boundY);
+                        isSafe = circleIntersection(myBubble, true);
+                    }
+                    myBubble.activate();
                 }
+            }
+        });
+        kf2 = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
 
-                myBubble.bubble.setVisible(false);
-                while (isSafe != true) {
-
-                    int boundX = Utilities.randInt(0, (int) getBoundsInParent().getMaxX());
-                    int boundY = Utilities.randInt(0, (int) getBoundsInParent().getMaxY());
-                    myBubble.bubble.setCenterX(boundX);
-                    myBubble.bubble.setLayoutY(boundY);
-                    isSafe = circleIntersection(myBubble, true);
+                for (int i = 0; i < myBubbles.size(); i++) {
+                    if (myBubbles.get(i).stage == 1) {
+                        if (myBubbles.get(i).bubble.getRadius() > 100) {
+                            myBubbles.get(i).deactivate();
+                        } else {
+                            myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + 1);
+                        }
+                    }
                 }
-                myBubble.activate();
-                myBubble.bubble.setVisible(true);
-//                myBubbles.get(i).setLayoutX(getBoundsInParent().getMaxX() / 2);
-//                myBubbles.get(i).setLayoutY(getBoundsInParent().getMaxY() / 2);
-
-
-//                    myBubbles.get(i).pane.setTranslateX(myBubbles.get(i).pane.getTranslateX() + myBubbles.get(i).directionX * 5);
-//                    myBubbles.get(i).pane.setTranslateY(myBubbles.get(i).pane.getTranslateY() + myBubbles.get(i).directionY * 5);
-//                }
 
             }
         });
-        kf2 = new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        kf3 = new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                    for (int i = 0; i < myBubbles.size(); i++) {
-                        if(myBubbles.get(i).stage ==1){
-                            checkBounds(myBubbles.get(i));
-                            myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + 1);
 
+                for (int i = 0; i < myBubbles.size(); i++) {
+                    if (myBubbles.get(i).stage == 1) {
+                        if (myBubbles.get(i).stage == 1) {
+                            circleIntersection(myBubbles.get(i), false);
                         }
-
-                        //                    circleIntersection(myBubbles.get(i));
-                        //                    System.out.println(myBubbles.get(i).getBoundsInParent().getMaxY());
-                        //                    System.out.println(myBubbles.get(i).getBoundsInParent().getMaxX());
-
-                        //                    myBubbles.get(i).pane.setTranslateX(myBubbles.get(i).pane.getTranslateX() + myBubbles.get(i).directionX * 5);
-                        //                    myBubbles.get(i).pane.setTranslateY(myBubbles.get(i).pane.getTranslateY() + myBubbles.get(i).directionY * 5);
                     }
-                } catch (IndexOutOfBoundsException e) {
                 }
+
             }
         });
         spawnTimeline.getKeyFrames().add(kf);
         growTimeline.getKeyFrames().addAll(kf2);
+        collisionTimeline.getKeyFrames().add(kf3);
     }
 
     public void startGif() {
@@ -200,7 +198,7 @@ public class Level extends Pane {
 //
 //                    circlesComplete.add(circlesInProgress.get(myIndex));
 //                    getChildren().remove(circlesInProgress.get(myIndex));
-                    System.out.println("hello");
+
 //                    if (answer.equals(Integer.parseInt(myBubbles.get(myIndex).myText.getText()))) {
 ////                        addScore();
 //
@@ -213,14 +211,14 @@ public class Level extends Pane {
                 }
             };
             myCircle.bubble.setStyle(Configurations.circleStyle);
-
+            myCircle.bubble.setVisible(false);
             myCircle.bubble.addEventHandler(MouseEvent.MOUSE_PRESSED, myAction);
             myBubbles.add(i, myCircle);
         }
     }
 
     public void initializeLevel() {
-        for(Bubble bubble: myBubbles){
+        for (Bubble bubble : myBubbles) {
             getChildren().add(bubble.bubble);
         }
         initializeLevelTimeline();
@@ -268,6 +266,7 @@ public class Level extends Pane {
     public void play() {
         growTimeline.play();
         spawnTimeline.play();
+        collisionTimeline.stop();
 //        timer.start();
     }
 
@@ -275,6 +274,7 @@ public class Level extends Pane {
     public void stop() {
         growTimeline.stop();
         spawnTimeline.stop();
+        collisionTimeline.stop();
     }
 
 
@@ -287,19 +287,18 @@ public class Level extends Pane {
 
                 Shape intersect = Shape.intersect(block, myShape.bubble);
 
-                if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
-
+                if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == false && myShape.stage == 1) {
+                    System.out.println("delete ball");
                     myShape.deactivate();
                     myBall.deactivate();
                     decrementScore();
                     decrementScore();
 
-                } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && !peek) {
-
+                } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == true && myShape.stage == 1) {
+                    safe = false;
+                } else if (Math.abs(myBall.bubble.getCenterX() - myShape.bubble.getCenterX()) > 100 && Math.abs(myBall.bubble.getCenterY() - myShape.bubble.getCenterY()) > 100 && myShape.stage == 1) {
                     safe = false;
                 }
-
-
             }
         }
         return safe;
@@ -333,6 +332,7 @@ public class Level extends Pane {
         }
         growTimeline.stop();
         spawnTimeline.stop();
+        collisionTimeline.stop();
     }
 
     public void startGame() {
@@ -342,6 +342,7 @@ public class Level extends Pane {
         }
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
+        collisionTimeline.playFromStart();
     }
 
 
@@ -349,28 +350,28 @@ public class Level extends Pane {
 
 class Bubble {
 
-
     public Bubble(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
         bubble = myCircle;
         this.myText = myText;
-        stage=0;
+        stage = 0;
     }
 
 
-    public enum status{
+    public enum status {
         STAGING, PLAYING, FINISHED
     }
 
-    public void activate(){
+    public void activate() {
         stage = 1;
         bubble.setVisible(true);
     }
 
-    public void deactivate(){
+    public void deactivate() {
         stage = 2;
         bubble.setVisible(false);
     }
-    public void reset(){
+
+    public void reset() {
         stage = 0;
         bubble.setVisible(false);
         bubble.setRadius(25);
