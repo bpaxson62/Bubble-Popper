@@ -223,6 +223,7 @@ public class Level extends Pane {
         }
         initializeLevelTimeline();
         play();
+        stopGame();
 
 
         double x = 100;
