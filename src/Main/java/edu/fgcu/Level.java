@@ -83,6 +83,7 @@ public class Level extends Pane {
         //getChildren().add(myGroup);
 //        populateCircles(100);
         initializeLevel();
+        stopGame();
     }
 
 
@@ -223,6 +224,7 @@ public class Level extends Pane {
         }
         initializeLevelTimeline();
         play();
+        stopGame();
 
 
         double x = 100;
@@ -343,7 +345,7 @@ public class Level extends Pane {
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
         collisionTimeline.playFromStart();
-        gameController.gameStart();
+//        gameController.gameStart();
     }
 
 
