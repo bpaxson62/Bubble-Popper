@@ -1,5 +1,6 @@
 package edu.fgcu;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,7 +31,7 @@ public class ScoreBoardController extends Parent{
 	private int highScore = 0;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
-	private ObservableList<Scores> allScores; //Store all scores here
+	private ObservableList<Scores> allScores = FXCollections.observableArrayList(); //Store all scores here
 	private static GridPane grid;
 	private static CreateGridPane createGridPane;
 	private static GameController gameController;
@@ -196,7 +197,7 @@ public class ScoreBoardController extends Parent{
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
 		//addScoreToList(2,2);
-		//allScores.add(new Scores(3, 3));
+		allScores.add(new Scores(3, 3));
 		
 		if(allScores == null){
 			scoreTxt = new Text("You have not played any games yet.");
