@@ -196,7 +196,6 @@ public class ScoreBoardController extends Parent{
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
-		//addScoreToList(2,2);
 		allScores.add(new Scores(3, 3));
 		
 		if(allScores == null){
