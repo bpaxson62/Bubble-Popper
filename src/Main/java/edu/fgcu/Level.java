@@ -83,7 +83,7 @@ public class Level extends Pane {
         //getChildren().add(myGroup);
 //        populateCircles(100);
         initializeLevel();
-        stopGame();
+        stopGameInit();
     }
 
 
@@ -111,7 +111,7 @@ public class Level extends Pane {
                     }
                 }
                 if (find == false) {
-                    stopGame();
+//                    stopGame();
                 } else {
 
                     myBubble.deactivate();
@@ -327,9 +327,17 @@ public class Level extends Pane {
         }
     }
 
+    public void stopGameInit(){
+        for (int i = 0; i < myBubbles.size(); i++) {
+            myBubbles.get(i).reset();
+        }
+        growTimeline.stop();
+        spawnTimeline.stop();
+        collisionTimeline.stop();
+    }
 
     public void stopGame() {
-
+        GifCreator.stopRecording();
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }
@@ -339,6 +347,7 @@ public class Level extends Pane {
     }
 
     public void startGame() {
+        GifCreator.startRecord();
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }

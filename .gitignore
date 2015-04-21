@@ -3,6 +3,9 @@
 *.iml
 *.project
 *.classpath
+
+src/Main/gifs/
+src/Main/tmp
 out/
 
 .idea/
