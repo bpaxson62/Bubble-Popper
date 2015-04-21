@@ -1,5 +1,7 @@
 package edu.fgcu;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -37,10 +39,18 @@ public class ScoreBoardController extends Parent{
 	private static CreateGridPane createGridPane;
 	private static GameController gameController;
 	private boolean firstTime = true;
+	private boolean doOnce =true;
+	private final Label scoreTxt = new Label();
+	private final Label scoreValue = new Label();
+	private final Label lifePointsTxt = new Label();
+	private final Label lifePointsValue = new Label();
+	private final ToolBar toolbar = new ToolBar();
+	//Buttons and Choice Boxes
+	private final Button startStopBtn = new Button();
+	private final ChoiceBox<String> difficulties = new ChoiceBox<String>(FXCollections.observableArrayList(
+			"Easy","Normal","Hard"));
 //	private static Level level;
 	//static ScoreBoardController outer = new ScoreBoardController(root);
-	
-	//class to create object for allScores list
 	
 	public ScoreBoardController(BorderPane scoreBoard){
 		this.root = scoreBoard;
@@ -74,10 +84,6 @@ public class ScoreBoardController extends Parent{
 		return gameController;
 	}
 	
-//	public static Level level(){
-//
-//		return GameController.mylevel;
-//	}
 	
 	 public static CreateGridPane getGridPane(){
 	    	return createGridPane;
@@ -86,24 +92,23 @@ public class ScoreBoardController extends Parent{
 	
 
 	public void createToolBar(int i){
-		Group myGroup = new Group();
-		
-		final ToolBar toolbar = new ToolBar();
-		//Buttons and Choice Boxes
-		final Button startStopBtn = new Button();
-    	ChoiceBox<String> difficulties = new ChoiceBox<String>();
     	Button scoreBoardBtn = new Button("Score Board");
     	
     	
-    	difficulties.getItems().addAll("Easy","Normal","Hard");
+    	
+    	if(doOnce==true){
     	difficulties.getSelectionModel().selectFirst();
+    	doOnce=false;
+    	}
     	
+    	difficulties.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+    		public void changed(ObservableValue ov, Number value, Number new_value){
+    		gameController.setDifficulty(difficulties.getValue());
+    		}
+    	});
+    	
+    	System.out.println("Difficultie = "+gameController.getDifficulty());
     	//Labels
-    	final Label scoreTxt = new Label();
-    	final Label scoreValue = new Label();
-    	final Label lifePointsTxt = new Label();
-    	final Label lifePointsValue = new Label();
-    	
     	
     	scoreTxt.setText("Score:");
     	scoreValue.setText(GameController.getScoreTxt());
@@ -115,8 +120,7 @@ public class ScoreBoardController extends Parent{
 			protected Void call() throws Exception {
 				updateMessage(GameController.getLifePointsTxt());
 				return null;
-			}
-    		
+			}	
     	};
     	
     	final Task<Void> scoreTask = new Task<Void>(){
@@ -149,6 +153,7 @@ public class ScoreBoardController extends Parent{
     	}
     	
     	//Set items to toolbar
+    	//if(doOnce==true){
     	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
     	toolbar.getItems().add(startStopBtn);
@@ -156,6 +161,8 @@ public class ScoreBoardController extends Parent{
     	toolbar.getItems().add(scoreValue);
     	toolbar.getItems().add(lifePointsTxt);
     	toolbar.getItems().add(lifePointsValue);
+    	//doOnce=false;
+    	//}
     	root.setTop(toolbar);
     	System.out.println("Setting toolbar after scoreboard " + GameController.getLifePointsTxt() +" "+firstTime);
     	//handiling button press for scoreboard creation
@@ -195,6 +202,31 @@ public class ScoreBoardController extends Parent{
     	    }
     		});
 		
+	}
+	
+	public void difficultyListner(){
+		difficulties.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+    		public void changed(ObservableValue ov, Number value, Number new_value){
+    		gameController.setDifficulty(difficulties.getValue());
+    		}
+    	});
+	}
+	
+	public void updateScoreValue(String score){
+		final Task <Void> task = new Task<Void>(){
+			@Override
+			protected Void call() throws Exception {
+				updateMessage(GameController.getLifePointsTxt());
+				return null;
+			}	
+    	};
+    	
+    	Thread thread = new Thread(task);
+    	thread.setDaemon(true);
+        thread.start();
+        
+        lifePointsValue.textProperty().bind(task.messageProperty());
+        //lifePointsValue.setText(GameController.getLifePointsTxt());
 	}
 	
 	public void updateToolBar(){
@@ -253,11 +285,12 @@ public class ScoreBoardController extends Parent{
 		grid.setPadding(new Insets(10,10,10,10));
 		Text scoreTxt;
 		Text difficultyTxt;
+		
 		//Setting Top grid headers and Title
 		//Left column is scores, right is difficulty
 		Text scoreTitle = new Text("All Scores");
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
-		//score.setTop(scoreTitle);
+
 		grid.add(scoreTitle,3,0); //column 2, row 1
 		//allScores.add(new Scores(3, 3));
 		
@@ -282,7 +315,6 @@ public class ScoreBoardController extends Parent{
 			difficultyTxt = new Text("Dif Temp"+i);
 			grid.add(difficultyTxt,5,i+2);
 			*/
-		 //allScores.add(new Scores(i+i, i));
 		 String Temp = allScores.get(i).toString();
 		 scoreTxt = new Text(Temp);
 		 grid.add(scoreTxt,1,i+2);
