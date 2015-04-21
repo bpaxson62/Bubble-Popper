@@ -55,36 +55,6 @@ public class GifCreator {
         recordThread.start();
     }
 
-//    public static void makeVideo(String movFile) throws MalformedURLException {
-//
-////        System.out.println("#### Easy Capture making video, please wait!!! ####");
-//
-//        JpegImagesToMovie imageToMovie = new JpegImagesToMovie();
-//
-//        Vector<String> imgLst = new Vector<String>();
-////        System.out.println(GifCreator.class.getProtectionDomain().getCodeSource().getLocation());
-//        File f = new File(System.getProperty("user.dir")+ "/src/Main/java/edu/fgcu/gifs");
-//
-//        File[] fileLst = f.listFiles();
-//        System.getProperty("user.dir");
-//        System.out.println(System.getProperty("user.dir"));
-//        for (int i = 0; i < fileLst.length; i++) {
-//
-//            imgLst.add(fileLst[i].getAbsolutePath());
-//        }
-//
-//
-//        MediaLocator oml;
-//
-//        if ((oml = imageToMovie.createMediaLocator(movFile)) == null) {
-//
-//            System.err.println("Cannot build media locator from: " + movFile);
-//
-//            System.exit(0);
-//        }
-//
-//        imageToMovie.doIt(screenWidth, screenHeight, (1000 / 50), imgLst, oml);
-//    }
 
     public static void stopRecording() {
         record = false;
