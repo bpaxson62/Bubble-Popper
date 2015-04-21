@@ -62,7 +62,12 @@ public class ScoreBoardController extends Parent{
 			case 3: this.difficulty = Configurations.HARD_DIFFICULTY;
 				break;
 			}
+			
 		}
+		public String toString(){
+			return Integer.toString(scores);
+		}
+		
 	}
 	
 	public static GameController gameController(){
@@ -172,8 +177,6 @@ public class ScoreBoardController extends Parent{
     	        scorePane.setCenter(createGridPane.CreateGrid(1));
     	        scoreStage.show();
     	        root.setTop(toolbar);
-    	        gameController.setLifePointsTxt(15);
-    	        System.out.println("Setting toolbar after scoreboard " + GameController.getLifePointsTxt());
     	    }
     		});
     	
@@ -187,6 +190,7 @@ public class ScoreBoardController extends Parent{
     	    	else{
     	    		startStopBtn.setText("Start");
 					gameController.changeState(0);
+					gameController.endGame();
     	    	}
     	    }
     		});
@@ -255,7 +259,7 @@ public class ScoreBoardController extends Parent{
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
-		allScores.add(new Scores(3, 3));
+		//allScores.add(new Scores(3, 3));
 		
 		if(allScores == null){
 			scoreTxt = new Text("You have not played any games yet.");
@@ -271,13 +275,17 @@ public class ScoreBoardController extends Parent{
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(difficultyHeader, 5, 1); //column 3, row 2
 		//limited to last 20 scores shown
-		for(int i=0;i<20;i++){
+		for(int i=0;i<allScores.size();i++){
 			//make this use list instead of temp
 		/*	scoreTxt =new Text("Temp"+ i);
 			grid.add(scoreTxt,1,i+2);
 			difficultyTxt = new Text("Dif Temp"+i);
 			grid.add(difficultyTxt,5,i+2);
 			*/
+		 //allScores.add(new Scores(i+i, i));
+		 String Temp = allScores.get(i).toString();
+		 scoreTxt = new Text(Temp);
+		 grid.add(scoreTxt,1,i+2);
 			
 		}
 		score.setTop(grid);

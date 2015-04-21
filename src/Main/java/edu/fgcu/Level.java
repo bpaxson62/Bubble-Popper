@@ -254,6 +254,7 @@ public class Level extends Pane {
 
     private void incrementScore() {
     	GameController.increaseScore();
+    	//GameController.setScore(1);
     }
 
     private void decrementScore() {

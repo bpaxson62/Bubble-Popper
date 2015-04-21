@@ -9,7 +9,7 @@ public class GameController{
 	private static String lifePointsTxt;
 	private static int score; //Users Score
 	private static String scoreTxt;
-	private int difficulty;
+	private static int difficulty;
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
 	
@@ -23,10 +23,11 @@ public class GameController{
     	return scoreBoardController;
     }
 	
-	public void setScore(int score) {
-        this.score = score;
-        scoreBoardController = new ScoreBoardController(root);
-		scoreBoardController.createToolBar(1);
+	public static void setScore(int score) {
+        GameController.score = score;
+        setScoreTxt(GameController.score);
+        //scoreBoardController = new ScoreBoardController(root);
+		//scoreBoardController.createToolBar(1);
     }
 	
 	public static void setScoreTxt(int score){
@@ -109,6 +110,7 @@ public class GameController{
 	public static void endGame(){
 		//root.setCenter(null);
 		myLevel.stopGame();
+		scoreBoardController.addScoreToList(GameController.score, GameController.difficulty);
 	}
 
 	public void changeState(int i) {
