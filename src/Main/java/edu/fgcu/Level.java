@@ -253,11 +253,11 @@ public class Level extends Pane {
 //    }
 
     private void incrementScore() {
-
+    	GameController.increaseScore();
     }
 
     private void decrementScore() {
-
+    	GameController.decreaseLifePoints();
     }
 
 
@@ -345,7 +345,6 @@ public class Level extends Pane {
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
         collisionTimeline.playFromStart();
-//        gameController.gameStart();
     }
 
 
