@@ -1,6 +1,8 @@
 package edu.fgcu;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,21 +32,28 @@ public class ScoreBoardController extends Parent{
 	private int highScore = 0;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
-	private ObservableList<Scores> allScores; //Store all scores here
+	private ObservableList<Scores> allScores = FXCollections.observableArrayList(); //Store all scores here
 	private static GridPane grid;
 	private static CreateGridPane createGridPane;
 	private static GameController gameController;
+	private boolean firstTime = true;
 //	private static Level level;
 	//static ScoreBoardController outer = new ScoreBoardController(root);
 	
 	//class to create object for allScores list
+	
+	public ScoreBoardController(BorderPane scoreBoard){
+		this.root = scoreBoard;
+		gameController = Main.getGameController();
+//		this.level = level();
+	}
+	
 	public class Scores{
 		private int scores;
 		private String difficulty;
 		
 		public Scores(int scores, int difficulty){
 			this.scores=scores;
-			
 			switch(difficulty){
 			case 1: this.difficulty = Configurations.EASY_DIFFICULTY;
 				break;
@@ -53,7 +62,12 @@ public class ScoreBoardController extends Parent{
 			case 3: this.difficulty = Configurations.HARD_DIFFICULTY;
 				break;
 			}
+			
 		}
+		public String toString(){
+			return Integer.toString(scores);
+		}
+		
 	}
 	
 	public static GameController gameController(){
@@ -69,29 +83,72 @@ public class ScoreBoardController extends Parent{
 	    	return createGridPane;
 	    }
 	
-	public ScoreBoardController(BorderPane scoreBoard){
-		this.root = scoreBoard;
-		gameController = Main.getGameController();
-//		this.level = level();
-	}
+	
 
 	public void createToolBar(int i){
 		Group myGroup = new Group();
-		ToolBar toolbar = new ToolBar();
-    	ChoiceBox difficulties = new ChoiceBox();
+		
+		final ToolBar toolbar = new ToolBar();
+		//Buttons and Choice Boxes
+		final Button startStopBtn = new Button();
+    	ChoiceBox<String> difficulties = new ChoiceBox<String>();
     	Button scoreBoardBtn = new Button("Score Board");
-    	final Button startStopBtn = new Button("Start");
+    	
+    	
     	difficulties.getItems().addAll("Easy","Normal","Hard");
     	difficulties.getSelectionModel().selectFirst();
-    	final Label label = new Label();
+    	
+    	//Labels
     	final Label scoreTxt = new Label();
     	final Label scoreValue = new Label();
     	final Label lifePointsTxt = new Label();
     	final Label lifePointsValue = new Label();
+    	
+    	
     	scoreTxt.setText("Score:");
-    	scoreValue.setText("0");
+    	scoreValue.setText(GameController.getScoreTxt());
     	lifePointsTxt.setText("HP:");
     	lifePointsValue.setText(GameController.getLifePointsTxt());
+    	
+    	final Task <Void> task = new Task<Void>(){
+			@Override
+			protected Void call() throws Exception {
+				updateMessage(GameController.getLifePointsTxt());
+				return null;
+			}
+    		
+    	};
+    	
+    	final Task<Void> scoreTask = new Task<Void>(){
+
+			@Override
+			protected Void call() throws Exception {
+				updateMessage(GameController.getScoreTxt());
+				return null;
+			}
+    
+    	};
+    	
+    	Thread thread = new Thread(task);
+    	thread.setDaemon(true);
+        thread.start();
+        Thread threadScore = new Thread(scoreTask);
+        threadScore.setDaemon(true);
+        threadScore.start();
+    	lifePointsValue.textProperty().bind(task.messageProperty());
+    	scoreValue.textProperty().bind(scoreTask.messageProperty());
+    	
+    	
+    	if (firstTime != false){
+    		startStopBtn.setText("Start");
+        	firstTime = false;
+    	}
+    	if(firstTime ==false){
+    		startStopBtn.setText("Stop");
+    		firstTime = true;
+    	}
+    	
+    	//Set items to toolbar
     	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
     	toolbar.getItems().add(startStopBtn);
@@ -100,7 +157,7 @@ public class ScoreBoardController extends Parent{
     	toolbar.getItems().add(lifePointsTxt);
     	toolbar.getItems().add(lifePointsValue);
     	root.setTop(toolbar);
-    	
+    	System.out.println("Setting toolbar after scoreboard " + GameController.getLifePointsTxt() +" "+firstTime);
     	//handiling button press for scoreboard creation
     	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
     	    public void handle(ActionEvent e) {
@@ -119,7 +176,7 @@ public class ScoreBoardController extends Parent{
     	        scoreStage.centerOnScreen();
     	        scorePane.setCenter(createGridPane.CreateGrid(1));
     	        scoreStage.show();
-    	        
+    	        root.setTop(toolbar);
     	    }
     		});
     	
@@ -133,12 +190,18 @@ public class ScoreBoardController extends Parent{
     	    	else{
     	    		startStopBtn.setText("Start");
 					gameController.changeState(0);
+					gameController.endGame();
     	    	}
     	    }
     		});
 		
 	}
+	
+	public void updateToolBar(){
+		
+	}
 
+	
 	//Get Methods
 	public int getHighScore(){
 		return highScore;
@@ -196,7 +259,6 @@ public class ScoreBoardController extends Parent{
 		scoreTitle.setFont(Font.font("Arial",FontWeight.BOLD, 25));
 		//score.setTop(scoreTitle);
 		grid.add(scoreTitle,3,0); //column 2, row 1
-		//addScoreToList(2,2);
 		//allScores.add(new Scores(3, 3));
 		
 		if(allScores == null){
@@ -213,12 +275,17 @@ public class ScoreBoardController extends Parent{
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(difficultyHeader, 5, 1); //column 3, row 2
 		//limited to last 20 scores shown
-		for(int i=0;i<20;i++){
+		for(int i=0;i<allScores.size();i++){
 			//make this use list instead of temp
-			scoreTxt =new Text("Temp"+ i);
+		/*	scoreTxt =new Text("Temp"+ i);
 			grid.add(scoreTxt,1,i+2);
 			difficultyTxt = new Text("Dif Temp"+i);
 			grid.add(difficultyTxt,5,i+2);
+			*/
+		 //allScores.add(new Scores(i+i, i));
+		 String Temp = allScores.get(i).toString();
+		 scoreTxt = new Text(Temp);
+		 grid.add(scoreTxt,1,i+2);
 			
 		}
 		score.setTop(grid);

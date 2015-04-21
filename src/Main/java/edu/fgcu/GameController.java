@@ -4,12 +4,14 @@ import javafx.scene.layout.BorderPane;
 
 public class GameController{
 	
-	private BorderPane root; //Instance of scene game node
-	private int lifePoints;  //Users life points
+	private static BorderPane root; //Instance of scene game node
+	private static int lifePoints;  //Users life points
 	private static String lifePointsTxt;
-	private int score; //Users Score
-	private int difficulty;
+	private static int score; //Users Score
+	private static String scoreTxt;
+	private static int difficulty;
 	public static Level myLevel;
+	private static ScoreBoardController scoreBoardController;
 	
 	public GameController(BorderPane game){
 		this.root = game;
@@ -17,20 +19,51 @@ public class GameController{
 		root.setCenter(myLevel);
 	}
 	
-	
-	public void setScore(int score) {
-        this.score = score;
+	public static ScoreBoardController getScoreBoardController(){
+    	return scoreBoardController;
     }
+	
+	public static void setScore(int score) {
+        GameController.score = score;
+        setScoreTxt(GameController.score);
+        //scoreBoardController = new ScoreBoardController(root);
+		//scoreBoardController.createToolBar(1);
+    }
+	
+	public static void setScoreTxt(int score){
+		String scrTxt = Integer.toString(score);
+		GameController.scoreTxt = scrTxt;
+		scoreBoardController = new ScoreBoardController(root);
+		scoreBoardController.createToolBar(1);
+	}
+	
+	public static String getScoreTxt(){
+		if (scoreTxt==null){
+			setScoreTxt(0);
+		}
+		return scoreTxt;
+	}
 	
 	public int getScore(){
 		return score;
 	}
 	
-	public int getLifePoints(){
+	public static int getLifePoints(){
 		return lifePoints;
 	}
 	
+	public static void setLifePointsTxt(int lifePoints){
+		String lPTxt = Integer.toString(lifePoints);
+		GameController.lifePointsTxt = lPTxt;
+		scoreBoardController = new ScoreBoardController(root);
+		scoreBoardController.createToolBar(1);
+		
+	}
+	
 	public static String getLifePointsTxt(){
+		if (lifePointsTxt==null){
+			setLifePointsTxt(10);
+		}
 		return lifePointsTxt;
 	}
 	
@@ -42,40 +75,52 @@ public class GameController{
 		this.difficulty = difficulty;
 	}
 	
-	public void decreaseLifePoints(){
+	public static void decreaseLifePoints(){
 		lifePoints--;
-		lifePointsTxt = Integer.toString(lifePoints);
+		setLifePointsTxt(lifePoints);
+		//lifePointsTxt = Integer.toString(lifePoints);
 		//If LifePOints hit zero, game is over
 		if(lifePoints==0){
 			endGame();
 		}
 	}
 	
+	
 	public void gameStart(){
 		lifePoints=10;
-		lifePointsTxt=Integer.toString(lifePoints);
+		setLifePointsTxt(lifePoints);
 		score = 0;
+		setScoreTxt(score);
 		difficulty = 1; //Need to make this set by user with default of 1(easy)
 		//changeState(1);
+		System.out.println("game start was run");
+		System.out.println("lifepoints = "+getLifePointsTxt());
+		scoreBoardController = new ScoreBoardController(root);
+		scoreBoardController.createToolBar(1);
 	}
 	
 	
 
 
-	public void increaseScore(){
+	public static void increaseScore(){
 		score++;
+		setScoreTxt(score);
 	}
 
-	public void endGame(){
-		root.setCenter(null);
+	public static void endGame(){
+		//root.setCenter(null);
+		myLevel.stopGame();
+		scoreBoardController.addScoreToList(GameController.score, GameController.difficulty);
 	}
 
 	public void changeState(int i) {
 //		Group myGroup = new Group();
 		if(i == 0){
 			myLevel.stopGame();
+			
 		}else{
 			myLevel.startGame();
+			gameStart();
 		}
 		//root.setCenter(myGroup);
 		//border.setCenter();
