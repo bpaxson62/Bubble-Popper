@@ -33,27 +33,27 @@ public class GameControllerTest {
 	public void testEasyDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty(1);
+		gameController.setDifficulty("Easy");
 		int difficulty = gameController.getDifficulty();
-		assertEquals("Should equal 1",difficulty,1);
+		assertEquals("Should equal 0",difficulty,0);
 	}
 	
 	@Test
 	public void testNormalDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty(2);
+		gameController.setDifficulty("Normal");
 		int difficulty = gameController.getDifficulty();
-		assertEquals("Should equal 2",difficulty,2);
+		assertEquals("Should equal 1",difficulty,1);
 	}
 	
 	@Test
 	public void testHardDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty(3);
+		gameController.setDifficulty("Hard");
 		int difficulty = gameController.getDifficulty();
-		assertEquals("Should equal 3",difficulty,3);
+		assertEquals("Should equal 2",difficulty,2);
 		
 	}
 	

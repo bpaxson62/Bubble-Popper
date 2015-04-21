@@ -9,7 +9,8 @@ public class GameController{
 	private static String lifePointsTxt;
 	private static int score; //Users Score
 	private static String scoreTxt;
-	private static int difficulty;
+	private static int difficulty=0;
+	private static String difficultyTxt="Easy";
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
 	
@@ -27,14 +28,15 @@ public class GameController{
         GameController.score = score;
         setScoreTxt(GameController.score);
         //scoreBoardController = new ScoreBoardController(root);
-		//scoreBoardController.createToolBar(1);
+		//scoreBoardController.createToolBar(1,getDifficultyTxt());
     }
 	
 	public static void setScoreTxt(int score){
 		String scrTxt = Integer.toString(score);
 		GameController.scoreTxt = scrTxt;
 		scoreBoardController = new ScoreBoardController(root);
-		scoreBoardController.createToolBar(1);
+		//scoreBoardController.createToolBar(1);
+		scoreBoardController.updateScoreValue(scoreTxt);
 	}
 	
 	public static String getScoreTxt(){
@@ -56,7 +58,7 @@ public class GameController{
 		String lPTxt = Integer.toString(lifePoints);
 		GameController.lifePointsTxt = lPTxt;
 		scoreBoardController = new ScoreBoardController(root);
-		scoreBoardController.createToolBar(1);
+		//scoreBoardController.createToolBar(1);
 		
 	}
 	
@@ -71,8 +73,17 @@ public class GameController{
 		return difficulty;
 	}
 	
-	public void setDifficulty(int difficulty){
-		this.difficulty = difficulty;
+	public static String getDifficultyTxt(){
+		return difficultyTxt;
+	}
+	
+	public void setDifficulty(String dif){
+		int x = 0;
+		if(dif == "Easy"){x=1;}
+		if(dif=="Normal"){x=2;}
+		if(dif=="Hard"){x=3;}
+		
+		this.difficulty = x;
 	}
 	
 	public static void decreaseLifePoints(){
@@ -91,12 +102,13 @@ public class GameController{
 		setLifePointsTxt(lifePoints);
 		score = 0;
 		setScoreTxt(score);
-		difficulty = 1; //Need to make this set by user with default of 1(easy)
+		difficulty = getDifficulty(); //Need to make this set by user with default of 1(easy)
 		//changeState(1);
 		System.out.println("game start was run");
 		System.out.println("lifepoints = "+getLifePointsTxt());
 		scoreBoardController = new ScoreBoardController(root);
-		scoreBoardController.createToolBar(1);
+		System.out.println("Difficulty is: "+getDifficulty());
+		//scoreBoardController.createToolBar(1);
 	}
 	
 	
