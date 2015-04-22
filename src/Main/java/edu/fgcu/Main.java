@@ -18,7 +18,10 @@ public class Main extends Application {
     private ArrayList<ScaleTransition> scaleTransition;
     private static GameController gameController;
     private static ScoreBoardController scoreBoardController;
-    
+    private static Scene mainScene;
+    public static Scene getScene(){
+        return mainScene;
+    }
     public static GameController getGameController(){
     	return gameController;
     }
@@ -39,7 +42,7 @@ public class Main extends Application {
                 Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 //        drawShapes(gc);
-//        canvas.snapshot(null, wim);
+//        .snapshot(null, wim);
         root.getChildren().add(canvas);
     	//final BorderPane scorePane = new BorderPane();
         Group gameGroup = new Group();
@@ -51,12 +54,22 @@ public class Main extends Application {
     	primaryStage.setResizable(false);
     	primaryStage.setWidth(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER);
     	primaryStage.setHeight(Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
-    	Scene scene = new Scene(root);
-    	primaryStage.setScene(scene);
+    	Scene mainScene = new Scene(root);
+    	primaryStage.setScene(mainScene);
         primaryStage.show();
+
         
         scoreBoardController = new ScoreBoardController(root);
         scoreBoardController.createToolBar(1);
+//        WritableImage image = null;
+//        scene.snapshot(null,image);
+//
+//        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+//        try {
+//            ImageIO.write(bImage, "jpg", new File(GifCreator.pictureStorageDir + File.separator + System.currentTimeMillis() + ".jpg"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
     

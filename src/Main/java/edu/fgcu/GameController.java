@@ -13,7 +13,11 @@ public class GameController{
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
-	
+
+	public static BorderPane getRoot(){
+		return root;
+	}
+
 	public GameController(BorderPane game){
 		this.root = game;
 		this.myLevel = new Level(0);

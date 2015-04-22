@@ -20,18 +20,18 @@ public class GifCreator {
     public GifCreator() {
     }
 
-    public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4;
+    public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
 
 
-    public static int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4;
+    public static int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
 
-    public void createImage(){
+    public void createImage() {
 
     }
 
     public static void startRecord() {
         record = true;
-//        Platform.setImplicitExit(false);
+
         Thread recordThread = new Thread() {
             @Override
             public void run() {
@@ -41,9 +41,6 @@ public class GifCreator {
                     rt = new Robot();
                     while (cnt == 0 || record) {
                         BufferedImage img = rt.createScreenCapture(new Rectangle(screenWidth, screenHeight));
-//                        WritableImage image = Main.canvas.snapshot(null, null);
-//                        BufferedImage img = SwingFXUtils.fromFXImage(image, null);
-//                        ImageIO.write(bImage, format, file);
                         ImageIO.write(img, "jpeg", new File(pictureStorageDir + File.separator
                                 + System.currentTimeMillis() + ".jpeg"));
                         if (cnt == 0) {
@@ -51,7 +48,7 @@ public class GifCreator {
                             record = true;
                             cnt = 1;
                         }
-                        Thread.sleep(50);
+                        Thread.sleep(25);
                     }
                 } catch (Exception e) {
 
@@ -59,38 +56,8 @@ public class GifCreator {
                 }
             }
         };
-//        Task<Integer> task = new Task<Integer>() {
-//            @Override public Integer call() throws Exception {
-//                Robot rt;
-//                int cnt = 0;
-//                try {
-//                    rt = new Robot();
-//                    while (cnt == 0 || record) {
-////                        BufferedImage img = rt.createScreenCapture(new Rectangle(screenWidth, screenHeight));
-//                        WritableImage image = Main.canvas.snapshot(null, null);
-//                        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-////                        ImageIO.write(bImage, format, file);
-//                        ImageIO.write(bImage, "jpeg", new File(pictureStorageDir + File.separator
-//                                + System.currentTimeMillis() + ".jpeg"));
-//                        if (cnt == 0) {
-//
-//                            record = true;
-//                            cnt = 1;
-//                        }
-//                        Thread.sleep(50);
-//                    }
-//                } catch (Exception e) {
-//
-//                    e.printStackTrace();
-//                }
-//                return null;
-//            }
-//
-//
-////            return 0;
-//        };
-//            new Thread(task).start();
-        recordThread.start();
+    recordThread.start();
+
     }
 
 
