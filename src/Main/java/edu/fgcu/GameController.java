@@ -9,7 +9,7 @@ public class GameController{
 	private static String lifePointsTxt;
 	private static int score; //Users Score
 	private static String scoreTxt;
-	private static int difficulty=0;
+	private static int difficulty=1;
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
@@ -54,7 +54,7 @@ public class GameController{
 		return scoreTxt;
 	}
 	
-	public int getScore(){
+	public static int getScore(){
 		return score;
 	}
 	
@@ -110,13 +110,11 @@ public class GameController{
 		setLifePointsTxt(lifePoints);
 		score = 0;
 		setScoreTxt(score);
-		difficulty = getDifficulty(); //Need to make this set by user with default of 1(easy)
-		//changeState(1);
+		difficulty = getDifficulty(); 
 		System.out.println("game start was run");
 		System.out.println("lifepoints = "+getLifePointsTxt());
 		scoreBoardController = new ScoreBoardController(root);
 		System.out.println("Difficulty is: "+getDifficulty());
-		//scoreBoardController.createToolBar(1);
 	}
 	
 	
@@ -128,17 +126,14 @@ public class GameController{
 	}
 
 	public static void endGame(){
-		//root.setCenter(null);
+		scoreBoardController.addScoreToList(getScore(), 0);
+		scoreBoardController.setHighScore(getScore());
 		myLevel.stopGame();
-		if (firstTime==true){
-		scoreBoardController.addScoreToList(GameController.score, 0);
-		}
-		else{
-			scoreBoardController.addScoreToList(GameController.score, 0);
-		}
-		scoreBoardController.resetStartButton();
+		
+		//scoreBoardController.resetStartButton();
+		
 	}
-
+	
 	public void changeState(int i) {
 //		Group myGroup = new Group();
 		if(i == 0){
