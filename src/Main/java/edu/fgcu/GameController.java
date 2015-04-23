@@ -9,7 +9,9 @@ public class GameController{
 	private static String lifePointsTxt;
 	private static int score; //Users Score
 	private static String scoreTxt;
+
 	private static int difficulty=1;
+
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
@@ -22,6 +24,7 @@ public class GameController{
 
 	public GameController(BorderPane game){
 		this.root = game;
+		this.difficulty=1;
 		this.myLevel = new Level(0);
 		root.setCenter(myLevel);
 	}
@@ -77,7 +80,7 @@ public class GameController{
 		return lifePointsTxt;
 	}
 	
-	public int getDifficulty(){
+	public static int getDifficulty(){
 		return difficulty;
 	}
 	
@@ -85,11 +88,12 @@ public class GameController{
 		return difficultyTxt;
 	}
 	
-	public void setDifficulty(String i){
-		int x=1;
-		if(i == "Easy"){x=1;}
-		if(i=="Normal"){x=2;}
-		if(i=="Hard"){x=3;}
+
+	public void setDifficulty(String dif){
+		int x = 1;
+		if(dif == "Easy"){x=1;}
+		if(dif=="Normal"){x=2;}
+		if(dif=="Hard"){x=3;}
 		
 		this.difficulty = x;
 	}
