@@ -39,7 +39,8 @@ public class Level extends Pane {
     private Text myEquationText;
     private Rectangle scoreRectangle;
     private Button scoreButton;
-    private int difficulty;
+    private int difficulty = 1;
+    private int difficultySpawn = 1000;
     private Timeline growTimeline;
     private Timeline spawnTimeline;
     private Timeline collisionTimeline;
@@ -49,6 +50,7 @@ public class Level extends Pane {
     private long timeInterval;
     private Canvas myCanvas;
     private BorderPane root;
+
     public Level(int Difficulty) {
         root = GameController.getRoot();
 
@@ -67,7 +69,7 @@ public class Level extends Pane {
             myBackGround = "4.jpg";
         }
         difficulty = Difficulty;
-        difficulty = 0;
+//        difficulty = 1;
         File picture = new File(System.getProperty("user.dir") + "\\src\\Media\\" + myBackGround);
 
         InputStream is = null;
@@ -84,7 +86,7 @@ public class Level extends Pane {
         setBackground(new Background(new BackgroundImage(myImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
 //        getChildren().addAll(myGroup);
-        myCanvas = new Canvas(Configurations.MAIN_SCREEN_WIDTH,Configurations.MAIN_SCREEN_HEIGHT);
+        myCanvas = new Canvas(Configurations.MAIN_SCREEN_WIDTH, Configurations.MAIN_SCREEN_HEIGHT);
         getChildren().add(myCanvas);
         //getChildren().add(myGroup);
 //        populateCircles(100);
@@ -130,7 +132,7 @@ public class Level extends Pane {
         KeyFrame kf;
         KeyFrame kf2;
         KeyFrame kf3;
-        kf = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+        kf = new KeyFrame(Duration.millis(difficultySpawn), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean isSafe = false;
 //                createImage();
@@ -165,9 +167,10 @@ public class Level extends Pane {
                 for (int i = 0; i < myBubbles.size(); i++) {
                     if (myBubbles.get(i).stage == 1) {
                         if (myBubbles.get(i).bubble.getRadius() > 100) {
+                            decrementScore();
                             myBubbles.get(i).deactivate();
                         } else {
-                            myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + 1);
+                            myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + difficulty);
                         }
                     }
                 }
@@ -326,7 +329,7 @@ public class Level extends Pane {
                     System.out.println("delete ball");
                     myShape.deactivate();
                     myBall.deactivate();
-                    decrementScore();
+//                    decrementScore();
 //                    decrementScore();
 
                 } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == true && myShape.stage == 1) {
@@ -389,6 +392,18 @@ public class Level extends Pane {
 
     public void startGame() {
         //GifCreator.startRecord();
+        int diff = gameController.getDifficulty();
+        if (diff == 1) {
+            difficulty = 1;
+            difficultySpawn = 1000;
+        } else if (diff == 3) {
+            difficulty = 3;
+            difficultySpawn = 350;
+        } else {
+            difficulty = 2;
+            difficultySpawn = 600;
+        }
+
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }
