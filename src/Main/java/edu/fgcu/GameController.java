@@ -10,7 +10,7 @@ public class GameController{
 	private static int score; //Users Score
 	private static String scoreTxt;
 
-	private static int difficulty=1;
+	private static int difficulty=0;
 
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
@@ -24,7 +24,7 @@ public class GameController{
 
 	public GameController(BorderPane game){
 		this.root = game;
-		this.difficulty=1;
+		this.difficulty=0;
 		this.myLevel = new Level(0);
 		root.setCenter(myLevel);
 	}
