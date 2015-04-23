@@ -21,10 +21,10 @@ public class GifCreator {
 
     }
 
-    public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
+    public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
 
-    public static int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
+    public static int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
     public void createImage() {
 
