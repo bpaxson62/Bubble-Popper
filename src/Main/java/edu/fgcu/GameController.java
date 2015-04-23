@@ -10,7 +10,7 @@ public class GameController{
 	private static int score; //Users Score
 	private static String scoreTxt;
 
-	private static int difficulty=1;
+	private static int difficulty=0;
 
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
