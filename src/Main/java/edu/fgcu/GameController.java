@@ -24,7 +24,7 @@ public class GameController{
 
 	public GameController(BorderPane game){
 		this.root = game;
-		this.difficulty=1;
+		this.difficulty=0;
 		this.myLevel = new Level(0);
 		root.setCenter(myLevel);
 	}
