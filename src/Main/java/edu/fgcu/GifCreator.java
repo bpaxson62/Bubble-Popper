@@ -18,6 +18,7 @@ public class GifCreator {
     public static final String gifOutputDir = System.getProperty("user.dir") + "//src/Main//gifs";
 
     public GifCreator() {
+
     }
 
     public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
@@ -44,7 +45,6 @@ public class GifCreator {
                         ImageIO.write(img, "jpeg", new File(pictureStorageDir + File.separator
                                 + System.currentTimeMillis() + ".jpeg"));
                         if (cnt == 0) {
-
                             record = true;
                             cnt = 1;
                         }
@@ -56,8 +56,7 @@ public class GifCreator {
                 }
             }
         };
-    recordThread.start();
-
+        recordThread.start();
     }
 
 
