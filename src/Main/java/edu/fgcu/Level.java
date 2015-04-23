@@ -326,7 +326,7 @@ public class Level extends Pane {
                     System.out.println("delete ball");
                     myShape.deactivate();
                     myBall.deactivate();
-//                    decrementScore();
+                    decrementScore();
 //                    decrementScore();
 
                 } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == true && myShape.stage == 1) {
@@ -381,14 +381,14 @@ public class Level extends Pane {
 //        Thread recordThread = new Thread() {
 //            @Override
 //            public void run() {
-        GifCreator.stopRecording();
+        //GifCreator.stopRecording();
 //            }
 //        };
 //        recordThread.start();
     }
 
     public void startGame() {
-        GifCreator.startRecord();
+        //GifCreator.startRecord();
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }

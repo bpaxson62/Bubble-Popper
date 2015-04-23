@@ -19,6 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -45,12 +47,15 @@ public class ScoreBoardController extends Parent{
 	private final Label lifePointsTxt = new Label();
 	private final Label lifePointsValue = new Label();
 	private final ToolBar toolbar = new ToolBar();
+	private final ToolBar bToolBar = new ToolBar();
+	//private static int scoreTest;
+	//private static String scoreTXT;
 	Button scoreBoardBtn = new Button("Score Board");
 	//Buttons and Choice Boxes
 	private final Button startStopBtn = new Button("Start");
 	private final ChoiceBox<String> difficulties = new ChoiceBox<String>(FXCollections.observableArrayList(
 			"Easy","Normal","Hard"));
-	/*
+	
 	private final Task <Void> task = new Task<Void>(){
 		@Override
 		protected Void call() throws Exception {
@@ -69,7 +74,7 @@ public class ScoreBoardController extends Parent{
 		}
 
 	};
-	*/
+	
 //	private static Level level;
 	//static ScoreBoardController outer = new ScoreBoardController(root);
 	
@@ -113,8 +118,6 @@ public class ScoreBoardController extends Parent{
 	
 
 	public void createToolBar(int i){
-    	
-    	
     	if (difficulties.getValue()==null){
     		difficulties.setValue("Easy");
     	}
@@ -134,7 +137,7 @@ public class ScoreBoardController extends Parent{
     	//scoreValue.setText(GameController.getScoreTxt());
     	lifePointsTxt.setText("HP:");
     	//lifePointsValue.setText(GameController.getLifePointsTxt());
-    	
+    	/*
     	final Task <Void> task = new Task<Void>(){
 			@Override
 			protected Void call() throws Exception {
@@ -149,11 +152,15 @@ public class ScoreBoardController extends Parent{
 			@Override
 			protected Void call() throws Exception {
 				updateMessage(GameController.getScoreTxt());
+				
+				Thread.sleep(100);
+				System.out.println("This is the thread");
+				
 				return null;
 			}
     
     	};
-    	
+    	*/
     	lifePointsValue.textProperty().bind(task.messageProperty());
     	Thread thread = new Thread(task);
     	thread.setDaemon(true);
@@ -178,15 +185,26 @@ public class ScoreBoardController extends Parent{
     	*/
     	//Set items to toolbar
     	
+        
     	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
     	toolbar.getItems().add(startStopBtn);
-    	toolbar.getItems().add(scoreTxt);
-    	toolbar.getItems().add(scoreValue);
-    	toolbar.getItems().add(lifePointsTxt);
-    	toolbar.getItems().add(lifePointsValue);
-    	root.setTop(toolbar);
     	
+    	bToolBar.getItems().add(scoreTxt);
+    	bToolBar.getItems().add(scoreValue);
+    	bToolBar.getItems().add(lifePointsTxt);
+    	bToolBar.getItems().add(lifePointsValue);
+       // StackPane one = new StackPane();
+       // one.getChildren().addAll(scoreValue);
+    	//stack.getChildren().addAll(scoreTxt);
+    	
+    	//hbox.getChildren().addAll(stack,one);
+    	//toolbar.getChildren().addAll(scoreBoardBtn,difficulties, startStopBtn, stack, one);
+    	
+    	root.setTop(toolbar);
+    	root.setBottom(bToolBar);
+    	//updateToolBar();
+    	//root.set
     	//handiling button press for scoreboard creation
     	scoreBoardBtn.setOnAction(new EventHandler<ActionEvent>() {
     	    public void handle(ActionEvent e) {
@@ -252,9 +270,33 @@ public class ScoreBoardController extends Parent{
 	}
 	
 	public void updateToolBar(){
-		startStopBtn.setText("Start");
+	
+    	
+    	//lifePointsValue.textProperty().bind(task.messageProperty());
+    	//Thread thread = new Thread(task);
+    	//thread.setDaemon(true);
+        //thread.start();
+        scoreTxt.setText("Score:");
+    	scoreValue.setText(GameController.getScoreTxt());
+    	lifePointsTxt.setText("HP:");
+    	lifePointsValue.setText(GameController.getLifePointsTxt());
+       // scoreValue.textProperty().bind(scoreTask.messageProperty());
+        //Thread threadScore = new Thread(scoreTask);
+       // threadScore.setDaemon(true);
+       // threadScore.start();
+		
+		scoreValue.setText(GameController.getScoreTxt());
+		bToolBar.getItems().add(scoreTxt);
+    	bToolBar.getItems().add(scoreValue);
+    	bToolBar.getItems().add(lifePointsTxt);
+    	bToolBar.getItems().add(lifePointsValue);
 		//scoreValue.setText("This is a test");
+		root.setBottom(bToolBar);
 	}
+	public void resetStartButton(){
+		startStopBtn.setText("Start");
+	}
+	
 /*
 	public void updateBar(){
 		String x= startStopBtn.getText();

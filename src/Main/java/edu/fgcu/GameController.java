@@ -41,8 +41,8 @@ public class GameController{
 		String scrTxt = Integer.toString(score);
 		GameController.scoreTxt = scrTxt;
 		
-		//scoreBoardController = new ScoreBoardController(root);
-		//scoreBoardController.updateBar();
+		scoreBoardController = new ScoreBoardController(root);
+		scoreBoardController.updateToolBar();
 		//scoreBoardController.createToolBar(1);
 		//scoreBoardController.updateToolBar();
 	}
@@ -66,7 +66,7 @@ public class GameController{
 		String lPTxt = Integer.toString(lifePoints);
 		GameController.lifePointsTxt = lPTxt;
 		scoreBoardController = new ScoreBoardController(root);
-		//scoreBoardController.createToolBar(1);
+		scoreBoardController.updateToolBar();
 		
 	}
 	
@@ -136,7 +136,7 @@ public class GameController{
 		else{
 			scoreBoardController.addScoreToList(GameController.score, 0);
 		}
-		scoreBoardController.updateToolBar();
+		scoreBoardController.resetStartButton();
 	}
 
 	public void changeState(int i) {
