@@ -13,10 +13,12 @@ public class GameController{
 	private static String difficultyTxt="Easy";
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
+	private static boolean firstTime =true;
 
 	public static BorderPane getRoot(){
 		return root;
 	}
+
 
 	public GameController(BorderPane game){
 		this.root = game;
@@ -38,9 +40,11 @@ public class GameController{
 	public static void setScoreTxt(int score){
 		String scrTxt = Integer.toString(score);
 		GameController.scoreTxt = scrTxt;
+		
 		scoreBoardController = new ScoreBoardController(root);
+		scoreBoardController.updateToolBar();
 		//scoreBoardController.createToolBar(1);
-		scoreBoardController.updateScoreValue(scoreTxt);
+		//scoreBoardController.updateToolBar();
 	}
 	
 	public static String getScoreTxt(){
@@ -62,7 +66,7 @@ public class GameController{
 		String lPTxt = Integer.toString(lifePoints);
 		GameController.lifePointsTxt = lPTxt;
 		scoreBoardController = new ScoreBoardController(root);
-		//scoreBoardController.createToolBar(1);
+		scoreBoardController.updateToolBar();
 		
 	}
 	
@@ -120,13 +124,19 @@ public class GameController{
 
 	public static void increaseScore(){
 		score++;
-		setScoreTxt(score);
+		setScore(score);
 	}
 
 	public static void endGame(){
 		//root.setCenter(null);
 		myLevel.stopGame();
-		scoreBoardController.addScoreToList(GameController.score, GameController.difficulty);
+		if (firstTime==true){
+		scoreBoardController.addScoreToList(GameController.score, 0);
+		}
+		else{
+			scoreBoardController.addScoreToList(GameController.score, 0);
+		}
+		scoreBoardController.resetStartButton();
 	}
 
 	public void changeState(int i) {
