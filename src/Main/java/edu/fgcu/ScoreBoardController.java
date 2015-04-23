@@ -33,10 +33,10 @@ public class ScoreBoardController extends Parent{
 	//private Group scoreBoard;
 	private static BorderPane root;
 	private Group myGroup;
-	private int highScore = 0;
+	private static int highScore;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
-	private ObservableList<Scores> allScores = FXCollections.observableArrayList(); //Store all scores here
+	private static ObservableList<Scores> allScores = FXCollections.observableArrayList(); //Store all scores here
 	private static GridPane grid;
 	private static CreateGridPane createGridPane;
 	private static GameController gameController;
@@ -48,6 +48,7 @@ public class ScoreBoardController extends Parent{
 	private final Label lifePointsValue = new Label();
 	private final ToolBar toolbar = new ToolBar();
 	private final ToolBar bToolBar = new ToolBar();
+	private int counter = 0;
 	//private static int scoreTest;
 	//private static String scoreTXT;
 	Button scoreBoardBtn = new Button("Score Board");
@@ -60,7 +61,6 @@ public class ScoreBoardController extends Parent{
 		@Override
 		protected Void call() throws Exception {
 			updateMessage(GameController.getLifePointsTxt());
-			 
 			return null;
 		}	
 	};
@@ -72,7 +72,6 @@ public class ScoreBoardController extends Parent{
 			updateMessage(GameController.getScoreTxt());
 			return null;
 		}
-
 	};
 	
 //	private static Level level;
@@ -100,7 +99,7 @@ public class ScoreBoardController extends Parent{
 			}
 			
 		}
-		public String toString(){
+	public String toString(){
 			return Integer.toString(scores);
 		}
 		
@@ -115,7 +114,11 @@ public class ScoreBoardController extends Parent{
 	    	return createGridPane;
 	    }
 	
-	
+	public void setHighScore(int s){
+		if(s>this.highScore){
+			this.highScore=s;
+		}
+	}
 
 	public void createToolBar(int i){
     	if (difficulties.getValue()==null){
@@ -297,32 +300,13 @@ public class ScoreBoardController extends Parent{
 		startStopBtn.setText("Start");
 	}
 	
-/*
-	public void updateBar(){
-		String x= startStopBtn.getText();
-		startStopBtn.setText(x);
-		String y = difficulties.getValue();
-		difficulties.setValue(y);
-		scoreTxt.setText(GameController.getScoreTxt());
-		
-		toolbar.getItems().add(scoreBoardBtn);
-    	toolbar.getItems().add(difficulties);
-    	toolbar.getItems().add(startStopBtn);
-    	toolbar.getItems().add(scoreTxt);
-    	toolbar.getItems().add(scoreValue);
-    	toolbar.getItems().add(lifePointsTxt);
-    	toolbar.getItems().add(lifePointsValue);
-    	root.setTop(toolbar);
-	}
-	*/
-	
 	public int getallScoresSize(){
 		return allScores.size();
 	}
 	
 	//Get Methods
 	public int getHighScore(){
-		return highScore;
+		return this.highScore;
 		}
 	
 	public List<Scores> getAllScores(){
@@ -334,10 +318,6 @@ public class ScoreBoardController extends Parent{
 		this.score = score;
 	}
 	
-	public void setHighScore(int highScore){
-		this.highScore = highScore;
-		}
-	
 	
 	public void comapreScore(int newScore){
 		//setup method to compare current highScore to newScore
@@ -348,10 +328,11 @@ public class ScoreBoardController extends Parent{
 	
 	//Adds score with difficulty setting to list
 	
-	public  void addScoreToList(int score, int difficulty){
+	public void addScoreToList(int score, int difficulty){
 		if (allScores != null){
-			allScores.add(new Scores(score, difficulty));
+			allScores.add(new Scores(score, counter));
 		}
+		counter++;
 	}
 	
 	//GridPane to display the scores in one column and difficulty in another
@@ -389,10 +370,11 @@ public class ScoreBoardController extends Parent{
 		Text scoreHeader = new Text("Score");
 		scoreHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(scoreHeader, 1, 1); //column 2, row 2
-		Text difficultyHeader = new Text("Difficulty");
+		Text difficultyHeader = new Text("HighScore");
 		difficultyHeader.setFont(Font.font("Arial",FontWeight.BOLD, 20));
 		grid.add(difficultyHeader, 5, 1); //column 3, row 2
 		//limited to last 20 scores shown
+		
 		for(int i=0;i<allScores.size();i++){
 			//make this use list instead of temp
 		/*	scoreTxt =new Text("Temp"+ i);
@@ -400,11 +382,13 @@ public class ScoreBoardController extends Parent{
 			difficultyTxt = new Text("Dif Temp"+i);
 			grid.add(difficultyTxt,5,i+2);
 			*/
-		 String Temp = allScores.get(i).toString();
-		 scoreTxt = new Text(Temp);
-		 grid.add(scoreTxt,1,i+2);
-			
+			String Temp = allScores.get(i).toString();
+			scoreTxt = new Text(Temp);
+			grid.add(scoreTxt,1,i+2);
 		}
+		String hs = Integer.toString(getHighScore());
+		Text highScore = new Text(hs);
+		grid.add(highScore,5,2);
 		score.setTop(grid);
 		return;
 		}
