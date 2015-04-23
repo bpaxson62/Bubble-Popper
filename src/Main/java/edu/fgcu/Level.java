@@ -393,15 +393,15 @@ public class Level extends Pane {
     public void startGame() {
         //GifCreator.startRecord();
         int diff = gameController.getDifficulty();
-        if (diff == 1) {
+        if (diff == 0) {
             difficulty = 1;
             difficultySpawn = 1000;
-        } else if (diff == 3) {
-            difficulty = 3;
-            difficultySpawn = 350;
-        } else {
+        } else if (diff == 1) {
             difficulty = 2;
             difficultySpawn = 600;
+        } else {
+            difficulty = 3;
+            difficultySpawn = 350;
         }
 
         for (int i = 0; i < myBubbles.size(); i++) {
