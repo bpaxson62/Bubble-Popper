@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.Lighting;
@@ -45,8 +46,12 @@ public class Level extends Pane {
     private AnimationTimer timer;
     private static final GameController gameController = Main.getGameController();
     private Group myGroup;
-
+    private long timeInterval;
+    private Canvas myCanvas;
+    private BorderPane root;
     public Level(int Difficulty) {
+        root = GameController.getRoot();
+
         Random rand = new Random();
         populateCircles(100);
         int backGround = rand.nextInt(4);
@@ -79,12 +84,38 @@ public class Level extends Pane {
         setBackground(new Background(new BackgroundImage(myImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
 //        getChildren().addAll(myGroup);
-
+        myCanvas = new Canvas(Configurations.MAIN_SCREEN_WIDTH,Configurations.MAIN_SCREEN_HEIGHT);
+        getChildren().add(myCanvas);
         //getChildren().add(myGroup);
 //        populateCircles(100);
+
+
         initializeLevel();
-        stopGame();
+        stopGameInit();
     }
+//    public void createImage(){
+//        Platform.runLater(new Runnable() {
+//            public void run() {
+////                GraphicsContext gc = myCanvas.getGraphicsContext2D();
+////                gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+////                /**
+////                 * Do the work with canvas
+////                 **/
+////                final SnapshotParameters snapshotParameters = new SnapshotParameters();
+////                snapshotParameters.setFill(Color.TRANSPARENT);
+//////                WritableImage image = myCanvas.snapshot(snapshotParameters, null);
+//                WritableImage snapshot =root.snapshot(null,null);
+//                BufferedImage bImage = SwingFXUtils.fromFXImage(snapshot, null);
+////                baos = new ByteArrayOutputStream();
+//                try {
+//                    ImageIO.write(bImage, "png", new File(GifCreator.pictureStorageDir + File.separator
+//                            + System.currentTimeMillis() + ".png"));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
 
     private void initializeLevelTimeline() {
@@ -102,6 +133,7 @@ public class Level extends Pane {
         kf = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean isSafe = false;
+//                createImage();
                 Bubble myBubble = null;
                 boolean find = false;
                 for (int i = 0; i < myBubbles.size(); i++) {
@@ -117,8 +149,8 @@ public class Level extends Pane {
                     myBubble.deactivate();
                     while (isSafe != true) {
 
-                        int boundX = Utilities.randInt(100, (int) getBoundsInParent().getMaxX() - 100);
-                        int boundY = Utilities.randInt(100, (int) getBoundsInParent().getMaxY() - 100);
+                        int boundX = Utilities.randInt(200, (int) getBoundsInLocal().getMaxX() - 200);
+                        int boundY = Utilities.randInt(200, (int) getBoundsInLocal().getMaxY() - 200);
                         myBubble.bubble.setCenterX(boundX);
                         myBubble.bubble.setLayoutY(boundY);
                         isSafe = circleIntersection(myBubble, true);
@@ -224,12 +256,11 @@ public class Level extends Pane {
         }
         initializeLevelTimeline();
         play();
-        stopGame();
+        stopGameInit();
 
 
         double x = 100;
         double y = Configurations.MAIN_SCREEN_HEIGHT / 4;
-
 
     }
 //
@@ -253,12 +284,12 @@ public class Level extends Pane {
 //    }
 
     private void incrementScore() {
-    	GameController.increaseScore();
-    	//GameController.setScore(1);
+        GameController.increaseScore();
+        //GameController.setScore(1);
     }
 
     private void decrementScore() {
-    	GameController.decreaseLifePoints();
+        GameController.decreaseLifePoints();
     }
 
 
@@ -270,7 +301,7 @@ public class Level extends Pane {
         growTimeline.play();
         spawnTimeline.play();
         collisionTimeline.stop();
-        
+
 //        timer.start();
     }
 
@@ -295,8 +326,8 @@ public class Level extends Pane {
                     System.out.println("delete ball");
                     myShape.deactivate();
                     myBall.deactivate();
-                    decrementScore();
-                    decrementScore();
+//                    decrementScore();
+//                    decrementScore();
 
                 } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == true && myShape.stage == 1) {
                     safe = false;
@@ -328,8 +359,7 @@ public class Level extends Pane {
         }
     }
 
-
-    public void stopGame() {
+    public void stopGameInit() {
 
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
@@ -339,7 +369,26 @@ public class Level extends Pane {
         collisionTimeline.stop();
     }
 
+    public void stopGame() {
+
+        for (int i = 0; i < myBubbles.size(); i++) {
+            myBubbles.get(i).reset();
+        }
+        growTimeline.stop();
+        spawnTimeline.stop();
+        collisionTimeline.stop();
+
+//        Thread recordThread = new Thread() {
+//            @Override
+//            public void run() {
+        GifCreator.stopRecording();
+//            }
+//        };
+//        recordThread.start();
+    }
+
     public void startGame() {
+        GifCreator.startRecord();
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
         }

@@ -14,6 +14,12 @@ public class GameController{
 	public static Level myLevel;
 	private static ScoreBoardController scoreBoardController;
 	private static boolean firstTime =true;
+
+	public static BorderPane getRoot(){
+		return root;
+	}
+
+
 	public GameController(BorderPane game){
 		this.root = game;
 		this.myLevel = new Level(0);
