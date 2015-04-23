@@ -17,15 +17,27 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 public class ScoreBoardController extends Parent{
@@ -127,9 +139,10 @@ public class ScoreBoardController extends Parent{
     	String x = difficulties.getValue();
     	//difficulties.getSelectionModel().selectFirst();
     	difficulties.setValue(x);
+    	
     	difficulties.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
-    		public void changed(ObservableValue<? extends Number> ov, Number value, Number new_value){
-    		gameController.setDifficulty(difficulties.getValue());
+    		public void changed(ObservableValue ov, Number value, Number new_value){
+    		gameController.setDifficulty(new_value.intValue());
     		}
     	});
     	
@@ -140,30 +153,7 @@ public class ScoreBoardController extends Parent{
     	//scoreValue.setText(GameController.getScoreTxt());
     	lifePointsTxt.setText("HP:");
     	//lifePointsValue.setText(GameController.getLifePointsTxt());
-    	/*
-    	final Task <Void> task = new Task<Void>(){
-			@Override
-			protected Void call() throws Exception {
-				updateMessage(GameController.getLifePointsTxt());
-				 
-				return null;
-			}	
-    	};
     	
-    	final Task<Void> scoreTask = new Task<Void>(){
-
-			@Override
-			protected Void call() throws Exception {
-				updateMessage(GameController.getScoreTxt());
-				
-				Thread.sleep(100);
-				System.out.println("This is the thread");
-				
-				return null;
-			}
-    
-    	};
-    	*/
     	lifePointsValue.textProperty().bind(task.messageProperty());
     	Thread thread = new Thread(task);
     	thread.setDaemon(true);
@@ -174,21 +164,7 @@ public class ScoreBoardController extends Parent{
         threadScore.setDaemon(true);
         threadScore.start();
     	
-    	
-    	
-    	/*
-    	if (firstTime != false){
-    		startStopBtn.setText("Start");
-        	firstTime = false;
-    	}
-    	if(firstTime ==false){
-    		startStopBtn.setText("Stop");
-    		firstTime = true;
-    	}
-    	*/
-    	//Set items to toolbar
-    	
-        
+    	//Set items to toolbar  
     	toolbar.getItems().add(scoreBoardBtn);
     	toolbar.getItems().add(difficulties);
     	toolbar.getItems().add(startStopBtn);
@@ -246,7 +222,7 @@ public class ScoreBoardController extends Parent{
     		});
 		
 	}
-	
+	/*
 	public void difficultyListner(){
 		difficulties.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
     		public void changed(ObservableValue ov, Number value, Number new_value){
@@ -254,7 +230,7 @@ public class ScoreBoardController extends Parent{
     		}
     	});
 	}
-	
+	*/
 	public void updateScoreValue(String score){
 		final Task <Void> task = new Task<Void>(){
 			@Override
@@ -338,12 +314,9 @@ public class ScoreBoardController extends Parent{
 	//GridPane to display the scores in one column and difficulty in another
 	public class CreateGridPane extends Parent{
 		private BorderPane score;
-		
 		public CreateGridPane(BorderPane scoreBoard){
-		
 		this.score = scoreBoard;
-		
-		//BorderPane score = new BorderPane();
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
@@ -384,10 +357,12 @@ public class ScoreBoardController extends Parent{
 			*/
 			String Temp = allScores.get(i).toString();
 			scoreTxt = new Text(Temp);
+			scoreTxt.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
 			grid.add(scoreTxt,1,i+2);
 		}
 		String hs = Integer.toString(getHighScore());
 		Text highScore = new Text(hs);
+		highScore.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
 		grid.add(highScore,5,2);
 		score.setTop(grid);
 		return;
