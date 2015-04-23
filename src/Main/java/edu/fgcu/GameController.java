@@ -85,11 +85,11 @@ public class GameController{
 		return difficultyTxt;
 	}
 	
-	public void setDifficulty(String dif){
-		int x = 0;
-		if(dif == "Easy"){x=1;}
-		if(dif=="Normal"){x=2;}
-		if(dif=="Hard"){x=3;}
+	public void setDifficulty(String i){
+		int x=1;
+		if(i == "Easy"){x=1;}
+		if(i=="Normal"){x=2;}
+		if(i=="Hard"){x=3;}
 		
 		this.difficulty = x;
 	}
@@ -140,8 +140,8 @@ public class GameController{
 			myLevel.stopGame();
 			
 		}else{
-			myLevel.startGame();
 			gameStart();
+			myLevel.startGame();	
 		}
 		//root.setCenter(myGroup);
 		//border.setCenter();
