@@ -384,14 +384,14 @@ public class Level extends Pane {
 //        Thread recordThread = new Thread() {
 //            @Override
 //            public void run() {
-        //GifCreator.stopRecording();
+        GifCreator.stopRecording();
 //            }
 //        };
 //        recordThread.start();
     }
 
     public void startGame() {
-        //GifCreator.startRecord();
+        GifCreator.startRecord();
         int diff = gameController.getDifficulty();
         if (diff == 0) {
             difficulty = 1;
