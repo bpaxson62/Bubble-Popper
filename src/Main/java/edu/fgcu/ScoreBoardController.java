@@ -142,7 +142,7 @@ public class ScoreBoardController extends Parent{
     	
     	difficulties.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
     		public void changed(ObservableValue ov, Number value, Number new_value){
-    		gameController.setDifficulty(difficulties.getValue());
+    		gameController.setDifficulty(new_value.intValue());
     		}
     	});
     	

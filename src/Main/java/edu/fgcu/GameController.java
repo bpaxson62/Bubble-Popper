@@ -89,13 +89,13 @@ public class GameController{
 	}
 	
 
-	public void setDifficulty(String dif){
-		int x = 1;
-		if(dif == "Easy"){x=1;}
-		if(dif=="Normal"){x=2;}
-		if(dif=="Hard"){x=3;}
+	public void setDifficulty(int i){
+		//int x = 1;
+		//if(i == "Easy"){x=1;}
+		//if(i=="Normal"){x=2;}
+		//if(i=="Hard"){x=3;}
 		
-		this.difficulty = x;
+		this.difficulty = i;
 	}
 	
 	public static void decreaseLifePoints(){
