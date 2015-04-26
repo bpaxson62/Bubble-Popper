@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -32,6 +33,8 @@ public class ScoreBoardController extends Parent{
 	private static BorderPane root;
 	private Group myGroup;
 	private static int highScore;
+	private static int highScoreHard;
+	private static int highScoreNormal;
 	private int score = 0;
 	private int difficulty; //Not sure if we want this as int or a string
 	private static ObservableList<Scores> allScores = FXCollections.observableArrayList(); //Store all scores here
@@ -112,11 +115,45 @@ public class ScoreBoardController extends Parent{
 	    	return createGridPane;
 	    }
 	
-	public void setHighScore(int s){
-		if(s>this.highScore){
-			this.highScore=s;
+	 //Easy high score setting
+	public static void setHighScore(int highScore){
+		if(highScore>ScoreBoardController.highScore){
+			ScoreBoardController.highScore=highScore;
 		}
 	}
+
+	/**
+	 * @return the highScoreHard
+	 */
+	public static int getHighScoreHard() {
+		return highScoreHard;
+	}
+
+
+	/**
+	 * @param highScoreHard the highScoreHard to set
+	 */
+	public static void setHighScoreHard(int highScoreHard) {
+		if(highScoreHard>ScoreBoardController.highScoreHard){
+		ScoreBoardController.highScoreHard = highScoreHard;
+		}
+	}
+
+
+	/**
+	 * @return the highScoreNormal
+	 */
+	public static int getHighScoreNormal() {
+		return highScoreNormal;
+	}
+
+	/**
+	 * @param highScoreNormal the highScoreNormal to set
+	 */
+	public static void setHighScoreNormal(int highScoreNormal) {
+		ScoreBoardController.highScoreNormal = highScoreNormal;
+	}
+
 
 	public void createToolBar(int i){
     	if (difficulties.getValue()==null){
@@ -346,10 +383,38 @@ public class ScoreBoardController extends Parent{
 			scoreTxt.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
 			grid.add(scoreTxt,1,i+2);
 		}
+		
 		String hs = Integer.toString(getHighScore());
+		String hsNormal = Integer.toString(getHighScoreNormal());
+		String hsHard = Integer.toString(getHighScoreHard());
+		
+		//Create text variables for labels
+		Text easyTxt = new Text("Easy");
+		Text normalTxt = new Text("Normal");
+		Text hardTxt = new Text("Hard");
 		Text highScore = new Text(hs);
+		Text highScoreN = new Text (hsNormal);
+		Text highScoreH = new Text(hsHard);
+		
+		//Set font and color of labels
 		highScore.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
-		grid.add(highScore,5,2);
+		highScoreN.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
+		highScoreH.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
+		
+		easyTxt.setFont(Font.font("Arial",FontWeight.BOLD,20));
+		normalTxt.setFont(Font.font("Arial",FontWeight.BOLD,20));
+		hardTxt.setFont(Font.font("Arial",FontWeight.BOLD,20));
+		
+		easyTxt.setFill(Color.GREEN);
+		normalTxt.setFill(Color.GOLDENROD);
+		hardTxt.setFill(Color.RED);
+		
+		grid.add(easyTxt,5,2);
+		grid.add(highScore,5,3);
+		grid.add(normalTxt,5,4);
+		grid.add(highScoreN,5,5);
+		grid.add(hardTxt,5,6);
+		grid.add(highScoreH,5,7);
 		score.setTop(grid);
 		return;
 		}
