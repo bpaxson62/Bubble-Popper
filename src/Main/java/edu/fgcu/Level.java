@@ -95,29 +95,7 @@ public class Level extends Pane {
         initializeLevel();
         stopGameInit();
     }
-//    public void createImage(){
-//        Platform.runLater(new Runnable() {
-//            public void run() {
-////                GraphicsContext gc = myCanvas.getGraphicsContext2D();
-////                gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
-////                /**
-////                 * Do the work with canvas
-////                 **/
-////                final SnapshotParameters snapshotParameters = new SnapshotParameters();
-////                snapshotParameters.setFill(Color.TRANSPARENT);
-//////                WritableImage image = myCanvas.snapshot(snapshotParameters, null);
-//                WritableImage snapshot =root.snapshot(null,null);
-//                BufferedImage bImage = SwingFXUtils.fromFXImage(snapshot, null);
-////                baos = new ByteArrayOutputStream();
-//                try {
-//                    ImageIO.write(bImage, "png", new File(GifCreator.pictureStorageDir + File.separator
-//                            + System.currentTimeMillis() + ".png"));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
+
 
 
     private void initializeLevelTimeline() {
@@ -125,7 +103,6 @@ public class Level extends Pane {
         spawnTimeline = new Timeline();
         collisionTimeline = new Timeline();
 
-        final StackPane tempPane;
         spawnTimeline.setCycleCount(Timeline.INDEFINITE);
         growTimeline.setCycleCount(Timeline.INDEFINITE);
         collisionTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -135,7 +112,6 @@ public class Level extends Pane {
         kf = new KeyFrame(Duration.millis(difficultySpawn), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean isSafe = false;
-//                createImage();
                 Bubble myBubble = null;
                 boolean find = false;
                 for (int i = 0; i < myBubbles.size(); i++) {
@@ -195,17 +171,6 @@ public class Level extends Pane {
         collisionTimeline.getKeyFrames().add(kf3);
     }
 
-    public void startGif() {
-//        Circle circle = new Circle(25, 25, 25);
-//        circle.setCenterX(500);
-//        circle.setCenterY(500);
-//        circle.setFill(Color.ORANGE);
-    }
-
-    public void stopGif() {
-
-    }
-
     public void populateCircles(int circleNum) {
         EventHandler<MouseEvent> myAction;
         myBubbles = new ArrayList<Bubble>();
@@ -228,9 +193,7 @@ public class Level extends Pane {
 
                 public void handle(MouseEvent event) {
                     incrementScore();
-
                     myBubbles.get(myIndex).deactivate();
-
 //
 //                    circlesComplete.add(circlesInProgress.get(myIndex));
 //                    getChildren().remove(circlesInProgress.get(myIndex));
@@ -261,34 +224,13 @@ public class Level extends Pane {
         play();
         stopGameInit();
 
-
         double x = 100;
         double y = Configurations.MAIN_SCREEN_HEIGHT / 4;
-
     }
-//
-//    public void initTimeline() {
-//        timeline = new Timeline();
-//        final StackPane tempPane;
-//        timeline.setCycleCount(Timeline.INDEFINITE);
-//        KeyFrame kf;
-//        kf = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-//            public void handle(ActionEvent event) {
-//                for (int i = 0; i < myBubbles.size(); i++) {
-//                    checkBounds(myBubbles.get(i));
-//                    circleIntersection(myBubbles.get(i));
-//                    myBubbles.get(i).setTranslateX(myBubbles.get(i).getTranslateX() + myBubbles.get(i).directionX * 5);
-//                    myBubbles.get(i).setTranslateY(myBubbles.get(i).getTranslateY() + myBubbles.get(i).directionY * 5);
-//                }
-//
-//            }
-//        });
-//        timeline.getKeyFrames().add(kf);
-//    }
+
 
     private void incrementScore() {
         GameController.increaseScore();
-        //GameController.setScore(1);
     }
 
     private void decrementScore() {
@@ -304,8 +246,6 @@ public class Level extends Pane {
         growTimeline.play();
         spawnTimeline.play();
         collisionTimeline.stop();
-
-//        timer.start();
     }
 
 
@@ -322,15 +262,12 @@ public class Level extends Pane {
         for (final Bubble myShape : myBubbles) {
             if (myShape.bubble != block) {
 
-
                 Shape intersect = Shape.intersect(block, myShape.bubble);
 
                 if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == false && myShape.stage == 1) {
                     System.out.println("delete ball");
                     myShape.deactivate();
                     myBall.deactivate();
-//                    decrementScore();
-//                    decrementScore();
 
                 } else if (intersect.getBoundsInLocal().getWidth() != -1 || intersect.getBoundsInLocal().getHeight() != -1 && peek == true && myShape.stage == 1) {
                     safe = false;
@@ -346,7 +283,6 @@ public class Level extends Pane {
         /*
         if ball hits walls
          */
-
         if (myBall.bubble.getBoundsInParent().getMinX() <= getBoundsInParent().getMinX()) {
             decrementScore();
             myBall.deactivate();
@@ -384,14 +320,13 @@ public class Level extends Pane {
 //        Thread recordThread = new Thread() {
 //            @Override
 //            public void run() {
-        //GifCreator.stopRecording();
+        GifCreator.stopRecording();
 //            }
 //        };
 //        recordThread.start();
     }
 
     public void startGame() {
-        //GifCreator.startRecord();
         int diff = gameController.getDifficulty();
         if (diff == 0) {
             difficulty = 1;
@@ -410,6 +345,7 @@ public class Level extends Pane {
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
         collisionTimeline.playFromStart();
+        GifCreator.startRecord();
     }
 
 
