@@ -33,8 +33,8 @@ public class GameControllerTest {
 	public void testEasyDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty("Easy");
-		int difficulty = gameController.getDifficulty();
+		gameController.setDifficulty(0);
+		int difficulty = GameController.getDifficulty();
 		assertEquals("Should equal 0",difficulty,0);
 	}
 	
@@ -42,8 +42,8 @@ public class GameControllerTest {
 	public void testNormalDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty("Normal");
-		int difficulty = gameController.getDifficulty();
+		gameController.setDifficulty(1);
+		int difficulty = GameController.getDifficulty();
 		assertEquals("Should equal 1",difficulty,1);
 	}
 	
@@ -51,8 +51,8 @@ public class GameControllerTest {
 	public void testHardDifficultySettings() {
 		//Test if setting changed correctly based on difficulty selected
 		//Settings should match those that correspond to chosen difficulty
-		gameController.setDifficulty("Hard");
-		int difficulty = gameController.getDifficulty();
+		gameController.setDifficulty(2);
+		int difficulty = GameController.getDifficulty();
 		assertEquals("Should equal 2",difficulty,2);
 		
 	}
@@ -62,25 +62,25 @@ public class GameControllerTest {
 		//test for life decreasing when bubbles poped
 		//life should decrease only if bubbles pop due to hitting other bubbles
 		//hitting the wall
-		gameController.decreaseLifePoints();
-		assertEquals("Life Points should equal 9", 9, gameController.getLifePoints());
+		GameController.decreaseLifePoints();
+		assertEquals("Life Points should equal 9", 9, GameController.getLifePoints());
 	
 	}
 	
 	@Test
 	public void testIncreaseScore() {
 		//give conditions for bubble poped, should increase score properly
-		gameController.increaseScore();
-		assertEquals("Score should equal 1",1,gameController.getScore());
+		GameController.increaseScore();
+		assertEquals("Score should equal 1",1,GameController.getScore());
 	}
 	
 	@Test
 	public void testLifePointstoZero() {
 		//game should end
 		for(int i =0;i<10; i++ ){
-			gameController.decreaseLifePoints();
+			GameController.decreaseLifePoints();
 		}
-		assertEquals("Life Points should equal 0", 0, gameController.getLifePoints());
+		assertEquals("Life Points should equal 0", 0, GameController.getLifePoints());
 		assertNull(root.getCenter());
 	}
 	
@@ -89,7 +89,7 @@ public class GameControllerTest {
 		//test for when user ends game manually
 
 		root.setCenter(new Level(1));
-		gameController.endGame();
+		GameController.endGame();
 		assertNull(root.getCenter());
 	}
 }

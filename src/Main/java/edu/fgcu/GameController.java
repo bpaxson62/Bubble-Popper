@@ -131,7 +131,15 @@ public class GameController{
 
 	public static void endGame(){
 		scoreBoardController.addScoreToList(getScore(), 0);
-		scoreBoardController.setHighScore(getScore());
+		switch (getDifficulty()){
+		case 0: ScoreBoardController.setHighScore(getScore());
+			break;
+		case 1: ScoreBoardController.setHighScoreNormal(getScore());
+			break;
+		case 2: ScoreBoardController.setHighScoreHard(getScore());
+			break;
+		}
+		
 		myLevel.stopGame();
 		
 		//scoreBoardController.resetStartButton();

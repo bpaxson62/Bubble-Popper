@@ -23,7 +23,7 @@ public final class Configurations  {
 	public static final int radius = 25;
 
 	//css
-	public static final String circleStyle = "-fx-fill: \n" +
+	/*public static final String circleStyle = "-fx-fill: \n" +
 			"        linear-gradient(#ffd65b, #e68400),\n" +
 			"        linear-gradient(#ffef84, #f2ba44),\n" +
 			"        linear-gradient(#ffea6a, #efaa22),\n" +
@@ -35,5 +35,6 @@ public final class Configurations  {
 			"    -fx-font-weight: bold;\n" +
 			"    -fx-font-size: 14px;\n" +
 			"    -fx-padding: 10 20 10 20;";
+			*/
 
 }

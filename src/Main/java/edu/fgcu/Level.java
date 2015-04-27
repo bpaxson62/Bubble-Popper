@@ -2,6 +2,8 @@ package edu.fgcu;
 
 import edu.fgcu.utilities.Utilities;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FillTransition;
+import javafx.animation.FillTransitionBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -40,8 +43,11 @@ public class Level extends Pane {
     private Rectangle scoreRectangle;
     private Button scoreButton;
     private int difficulty = 1;
-    private int difficultySpawn = 1000;
+    private static int difficultySpawn = 1000;
     private Timeline growTimeline;
+
+    private Timeline colorTimeline;
+
     private Timeline spawnTimeline;
     private Timeline collisionTimeline;
     private AnimationTimer timer;
@@ -50,7 +56,8 @@ public class Level extends Pane {
     private long timeInterval;
     private Canvas myCanvas;
     private BorderPane root;
-
+    private FillTransition fillTransition;
+    
     public Level(int Difficulty) {
         root = GameController.getRoot();
 
@@ -96,6 +103,33 @@ public class Level extends Pane {
         stopGameInit();
     }
 
+//    public void createImage(){
+//        Platform.runLater(new Runnable() {
+//            public void run() {
+////                GraphicsContext gc = myCanvas.getGraphicsContext2D();
+////                gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
+////                /**
+////                 * Do the work with canvas
+////                 **/
+////                final SnapshotParameters snapshotParameters = new SnapshotParameters();
+////                snapshotParameters.setFill(Color.TRANSPARENT);
+//////                WritableImage image = myCanvas.snapshot(snapshotParameters, null);
+//                WritableImage snapshot =root.snapshot(null,null);
+//                BufferedImage bImage = SwingFXUtils.fromFXImage(snapshot, null);
+////                baos = new ByteArrayOutputStream();
+//                try {
+//                    ImageIO.write(bImage, "png", new File(GifCreator.pictureStorageDir + File.separator
+//                            + System.currentTimeMillis() + ".png"));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+    
+    public static int getDifficultySpawn(){
+    	return difficultySpawn;
+    }
 
 
     private void initializeLevelTimeline() {
@@ -103,12 +137,19 @@ public class Level extends Pane {
         spawnTimeline = new Timeline();
         collisionTimeline = new Timeline();
 
+        colorTimeline = new Timeline();
+        
+        final StackPane tempPane;
+        
+        colorTimeline.setCycleCount(Timeline.INDEFINITE);
+
         spawnTimeline.setCycleCount(Timeline.INDEFINITE);
         growTimeline.setCycleCount(Timeline.INDEFINITE);
         collisionTimeline.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf;
         KeyFrame kf2;
         KeyFrame kf3;
+        KeyFrame kf4;
         kf = new KeyFrame(Duration.millis(difficultySpawn), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean isSafe = false;
@@ -138,20 +179,28 @@ public class Level extends Pane {
             }
         });
         kf2 = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-
+        	
+            @SuppressWarnings("deprecation")
+			public void handle(ActionEvent event) {
+            	
                 for (int i = 0; i < myBubbles.size(); i++) {
                     if (myBubbles.get(i).stage == 1) {
                         if (myBubbles.get(i).bubble.getRadius() > 100) {
                             decrementScore();
                             myBubbles.get(i).deactivate();
+                            
                         } else {
                             myBubbles.get(i).bubble.setRadius(myBubbles.get(i).bubble.getRadius() + difficulty);
+                            
+                            
+                            
                         }
+                        
                     }
                 }
 
             }
+            
         });
         kf3 = new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -166,22 +215,42 @@ public class Level extends Pane {
 
             }
         });
+  
+    	
         spawnTimeline.getKeyFrames().add(kf);
         growTimeline.getKeyFrames().addAll(kf2);
         collisionTimeline.getKeyFrames().add(kf3);
     }
 
-    public void populateCircles(int circleNum) {
+
+    public void startGif() {
+//        Circle circle = new Circle(25, 25, 25);
+//        circle.setCenterX(500);
+//        circle.setCenterY(500);
+//        circle.setFill(Color.ORANGE);
+    }
+
+    public void stopGif() {
+
+    }
+
+   
+	@SuppressWarnings("deprecation")
+	public void populateCircles(int circleNum) {
+
         EventHandler<MouseEvent> myAction;
         myBubbles = new ArrayList<Bubble>();
+        //bubbbleColorTransition();
 //        circlesInProgress = new ArrayList<Bubble>();
 //        circlesComplete = new ArrayList<Bubble>();
+        
         for (int i = 0; i < circleNum; i++) {
             Bubble myCircle = new Bubble(new Circle(Configurations.radius));
             Glow myGlow = new Glow();
             myGlow.setLevel(.08);
-
+            
             myCircle.bubble.setEffect(new Lighting());
+            
 //            myCircle.setEffect(myGlow);
 //            Lighting lighting = new Lighting();
 //            Light myLight = new Light();
@@ -194,6 +263,7 @@ public class Level extends Pane {
                 public void handle(MouseEvent event) {
                     incrementScore();
                     myBubbles.get(myIndex).deactivate();
+
 //
 //                    circlesComplete.add(circlesInProgress.get(myIndex));
 //                    getChildren().remove(circlesInProgress.get(myIndex));
@@ -209,10 +279,14 @@ public class Level extends Pane {
                     //}
                 }
             };
-            myCircle.bubble.setStyle(Configurations.circleStyle);
+           // myCircle.bubble.setStyle(Configurations.circleStyle);
+            //myCircle.bubble.setFill(Color.GREEN);
             myCircle.bubble.setVisible(false);
             myCircle.bubble.addEventHandler(MouseEvent.MOUSE_PRESSED, myAction);
             myBubbles.add(i, myCircle);
+            
+            
+            
         }
     }
 
@@ -220,7 +294,9 @@ public class Level extends Pane {
         for (Bubble bubble : myBubbles) {
             getChildren().add(bubble.bubble);
         }
+        
         initializeLevelTimeline();
+        //playColorTransition();
         play();
         stopGameInit();
 
@@ -245,7 +321,10 @@ public class Level extends Pane {
     public void play() {
         growTimeline.play();
         spawnTimeline.play();
-        collisionTimeline.stop();
+
+        collisionTimeline.play();
+        colorTimeline.play();
+//        timer.start();
     }
 
 
@@ -253,6 +332,7 @@ public class Level extends Pane {
         growTimeline.stop();
         spawnTimeline.stop();
         collisionTimeline.stop();
+        colorTimeline.stop();
     }
 
 
@@ -325,8 +405,14 @@ public class Level extends Pane {
 //        };
 //        recordThread.start();
     }
+    
+    
 
-    public void startGame() {
+
+   
+	public void startGame() {
+        GifCreator.startRecord();
+
         int diff = gameController.getDifficulty();
         if (diff == 0) {
             difficulty = 1;
@@ -341,21 +427,35 @@ public class Level extends Pane {
 
         for (int i = 0; i < myBubbles.size(); i++) {
             myBubbles.get(i).reset();
+            
         }
+       
+        colorTimeline.playFromStart();
         growTimeline.playFromStart();
         spawnTimeline.playFromStart();
         collisionTimeline.playFromStart();
-        GifCreator.startRecord();
-    }
 
+    }
+    
 
 }
 
-class Bubble {
+class Bubble extends Shape{
+    private FillTransition fillTransition;
 
-    public Bubble(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
+    @SuppressWarnings("deprecation")
+	public Bubble(Circle myCircle/*, int directionY, int directionX, Text myText*/) {
         bubble = myCircle;
         this.myText = myText;
+        fillTransition = FillTransitionBuilder.create().duration(Duration.millis(Level.getDifficultySpawn()))
+       		.shape(bubble)
+       		.fromValue(Color.GREEN)
+       		.toValue(Color.RED)
+       		.cycleCount(Timeline.INDEFINITE)
+       		.autoReverse(false)
+       		.build();
+       fillTransition.playFromStart();
+       fillTransition.stop();
         stage = 0;
     }
 
@@ -367,17 +467,21 @@ class Bubble {
     public void activate() {
         stage = 1;
         bubble.setVisible(true);
+        fillTransition.playFromStart();
     }
 
     public void deactivate() {
         stage = 2;
         bubble.setVisible(false);
+        fillTransition.stop();
     }
 
     public void reset() {
         stage = 0;
         bubble.setVisible(false);
         bubble.setRadius(25);
+        fillTransition.stop();
+        fillTransition.playFromStart();
     }
 
 
@@ -389,5 +493,12 @@ class Bubble {
     int directionY;
     int directionX;
     Text myText;
+	@Override
+	public com.sun.javafx.geom.Shape impl_configShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }
