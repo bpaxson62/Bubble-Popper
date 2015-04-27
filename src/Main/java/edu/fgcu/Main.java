@@ -57,7 +57,7 @@ public class Main extends Application {
     	Scene mainScene = new Scene(root);
     	primaryStage.setScene(mainScene);
         primaryStage.show();
-
+        GifCreator.deleteDir();
         
         scoreBoardController = new ScoreBoardController(root);
         scoreBoardController.createToolBar(1);
