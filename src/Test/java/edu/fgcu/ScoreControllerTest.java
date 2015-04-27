@@ -52,13 +52,14 @@ public class ScoreControllerTest {
 	@Test
 	public void testUpdateHighScore() {
 		
-		scoreBoardController.setHighScore(10);
+		ScoreBoardController.setHighScore(10);
 		int newScoreLower = 5;
 		int newScoreHigher = 20;
-		scoreBoardController.comapreScore(newScoreLower);
+		//scoreBoardController.comapreScore(newScoreLower);
+		ScoreBoardController.setHighScore(newScoreLower);
 		assertEquals("Should be 10", 10, scoreBoardController.getHighScore() );
 		
-		scoreBoardController.comapreScore(newScoreHigher);
+		ScoreBoardController.setHighScore(newScoreHigher);
 		assertEquals("Should be 20",20, scoreBoardController.getHighScore() );
 		
 	}

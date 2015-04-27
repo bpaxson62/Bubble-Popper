@@ -317,14 +317,14 @@ public class ScoreBoardController extends Parent{
 		this.score = score;
 	}
 	
-	
+	/*
 	public void comapreScore(int newScore){
 		//setup method to compare current highScore to newScore
 		if (newScore > this.highScore){
 			this.highScore = newScore;
 		}
 	}
-	
+	*/
 	//Adds score with difficulty setting to list
 	
 	public void addScoreToList(int score, int difficulty){
