@@ -24,7 +24,7 @@ public class GifCreateTest {
 
 		GifCreator.startRecord();
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class GifCreateTest {
 
 		GifCreator.startRecord();
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -60,12 +60,13 @@ public class GifCreateTest {
 		File input = new File(GifCreator.gifOutputDir);
 		GifCreator.startRecord();
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		GifCreator.stopRecording();
 		for(int i = 0; i< input.listFiles().length; i++){
+			System.out.println(input.listFiles()[i].length());
 			assertTrue(input.listFiles()[i].length() > 0);
 		}
 	}
