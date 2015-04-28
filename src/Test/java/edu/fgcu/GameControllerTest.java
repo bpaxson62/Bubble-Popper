@@ -10,15 +10,18 @@ import static org.junit.Assert.*;
 
 public class GameControllerTest {
 	private static GameController gameController;
+	public static Level myLevel;
 	BorderPane root;
 
 	@Before
 	public void setup() {
 		//put setup info here
 		root = new BorderPane();
-		root.setCenter(new Level(1));
+		//root.setCenter(new Level(1));
+		GameControllerTest.myLevel = new Level(0);
 		gameController = new GameController(root);
-		gameController.gameStart();
+		//myLevel.startGame();
+		//gameController.gameStart();
 	}
 	
 	//Some test classes for GUI will be auto-created using WindowTester

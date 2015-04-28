@@ -10,6 +10,8 @@ import static org.junit.Assert.*;
 
 public class ScoreControllerTest {
 	private static ScoreBoardController scoreBoardController;
+	private static Level level;
+	private static GameController gameController;
 	BorderPane root;
 	
 	public class TestObject{
@@ -20,6 +22,7 @@ public class ScoreControllerTest {
 			this.difficulty=difficulty;
 		}
 	}
+
 	
 	protected ObservableList<TestObject> testScores;
 	public void addTestScores(){
@@ -27,11 +30,11 @@ public class ScoreControllerTest {
 	}
 	@Before
 	public void setup() {
-	scoreBoardController = new ScoreBoardController(null);
 	root = new BorderPane();
-	root.setCenter(new Level(1));
 	scoreBoardController = new ScoreBoardController(root);
+	//GameControllerTest.myLevel = new Level(0);
 	
+	gameController = Main.getGameController();
 	}
 	
 	//Some test classes for GUI will be auto-created using WindowTester

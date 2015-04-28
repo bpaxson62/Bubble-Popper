@@ -5,8 +5,8 @@ import javafx.scene.layout.BorderPane;
 public class GameController{
 	
 	private static BorderPane root; //Instance of scene game node
-	private static int lifePoints;  //Users life points
-	private static String lifePointsTxt;
+	private static int lifePoints=10;  //Users life points
+	private static String lifePointsTxt="10";
 	private static int score; //Users Score
 	private static String scoreTxt;
 
