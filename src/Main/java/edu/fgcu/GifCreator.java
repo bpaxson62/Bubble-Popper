@@ -1,5 +1,9 @@
 package edu.fgcu;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -43,14 +47,17 @@ public class GifCreator {
             @Override
             public void run() {
                 Robot rt;
+
                 int cnt = 0;
                 try {
                     rt = new Robot();
                     while (cnt == 0 || record) {
-                        BufferedImage image = rt.createScreenCapture(new Rectangle(screenWidth, screenHeight));
-//                        File input = new File("digital_image_processing.jpg");
-//                        BufferedImage image = ImageIO.read(input);
 
+                        WritableImage snapshot;
+                        snapshot = GameController.getRoot().snapshot(new SnapshotParameters(),null);
+
+                        BufferedImage image = null;
+                                SwingFXUtils.fromFXImage(snapshot,image);
                         File compressedImageFile = new File(pictureStorageDir + File.separator
                                 + System.currentTimeMillis() + ".jpg");
 
@@ -82,6 +89,8 @@ public class GifCreator {
                 }
             }
         };
+
+
         recordThread.start();
     }
 
