@@ -43,14 +43,14 @@ public class GifCreator {
             @Override
             public void run() {
                 Robot rt;
+
                 int cnt = 0;
                 try {
                     rt = new Robot();
                     while (cnt == 0 || record) {
-                        BufferedImage image = rt.createScreenCapture(new Rectangle(screenWidth, screenHeight));
-//                        File input = new File("digital_image_processing.jpg");
-//                        BufferedImage image = ImageIO.read(input);
 
+
+                        BufferedImage image = rt.createScreenCapture(new Rectangle(screenWidth, screenHeight));
                         File compressedImageFile = new File(pictureStorageDir + File.separator
                                 + System.currentTimeMillis() + ".jpg");
 
@@ -82,6 +82,8 @@ public class GifCreator {
                 }
             }
         };
+
+
         recordThread.start();
     }
 
