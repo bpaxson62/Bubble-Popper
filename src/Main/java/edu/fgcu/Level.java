@@ -187,7 +187,7 @@ public class Level extends Pane {
             getChildren().add(bubble.bubble);
         }
         initializeLevelTimeline();
-        startGame();
+        start();
         stopGameInit();
     }
 
@@ -266,6 +266,13 @@ public class Level extends Pane {
         spawnTimeline.stop();
         collisionTimeline.stop();
         GifCreator.stopRecording();
+    }
+
+
+    public void start(){
+        growTimeline.play();
+        spawnTimeline.play();
+        collisionTimeline.play();
     }
 
 	public void startGame() {
