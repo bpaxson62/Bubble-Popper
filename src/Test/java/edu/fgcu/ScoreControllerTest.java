@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.fgcu.ScoreBoardController.CreateGridPane;
 import static org.junit.Assert.*;
 
 public class ScoreControllerTest extends Application{
@@ -151,10 +152,12 @@ public class ScoreControllerTest extends Application{
 	@Test
 	public void testCreateGrid(){
 		BorderPane root = new BorderPane();
+		BorderPane scorePanre = new BorderPane();
         root.setCenter(new Level(0));
         gameController = new GameController(root);
-		ScoreBoardController.setHighScore(10);
-		
+        scoreBoardController = new ScoreBoardController(root);
+        CreateGridPane cg = new CreateGridPane(root);
+        //createGridPane = new CreateGridPane(scorePanre);
 		assertNotNull(root);
 	}
 	
