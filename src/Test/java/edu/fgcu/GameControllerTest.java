@@ -1,10 +1,14 @@
 package edu.fgcu;
 
+import edu.fgcu.utilities.Utilities;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,11 +16,39 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class GameControllerTest extends Application{
-	 private static GameController gameController;
-	    Level testLevel;
-	    BorderPane root;
+////	 private static GameController gameController;
+//	    Level testLevel;
+//	    BorderPane root;
+	public class TestObject{
+		private int score;
+		private int difficulty;
+		public TestObject(int score, int difficulty){
+			this.score=score;
+			this.difficulty=difficulty;
+		}
+		public String toString(){
+			return Integer.toString(score);
+		}
 
-	    @BeforeClass
+	}
+
+	private static ScoreBoardController scoreBoardController;
+	private static Level level;
+	private static GameController gameController;
+	BorderPane root;
+	Level testLevel;
+
+	protected ObservableList<TestObject> testScores;
+	public void addTestScores(){
+		if(testScores!=null){
+			testScores.add(new TestObject(10, 0));
+		}
+	}
+
+
+
+
+	@BeforeClass
 	    public static void initJFX() {
 	        Thread t = new Thread("Initialize the JavaFX") {
 	            @Override
@@ -188,11 +220,154 @@ public class GameControllerTest extends Application{
 	@Test
 	public void testGetDifficulty(){
 		gameController.setDifficulty(2);
-		assertEquals("SHould be 10",2,GameController.getDifficulty());
+		assertEquals("SHould be 10", 2, GameController.getDifficulty());
 	}
 	
 	public void testGameStart(){
 		gameController.gameStart();
-		assertEquals("LP is 10",10,gameController.getLifePoints());
+		assertEquals("LP is 10", 10, gameController.getLifePoints());
 	}
+	@Test
+	public void testScoreboardCreate() {
+		//test for if scoreboard is created when button to view is clicked
+		BorderPane root = new BorderPane();
+		root.setCenter(new Level(0));
+
+		gameController = new GameController(root);
+		scoreBoardController = new ScoreBoardController(root);
+		assertNotNull(root);
+	}
+
+	@Test
+	public void testAddLastScore() {
+		scoreBoardController = new ScoreBoardController(root);
+		BorderPane root = new BorderPane();
+		root.setCenter(new Level(0));
+		ObservableList<TestObject> testScores = FXCollections.observableArrayList();
+		testScores.add(new TestObject(10, 0));
+		gameController = new GameController(root);
+		//testScores.add(new TestObject(10, 0));
+		scoreBoardController.addScoreToList(10, 0);
+//		System.out.println( "first is    " + testScores.get(0));
+//		System.out.println("second is   " + scoreBoardController.getAllScores().get(0));
+
+		assertTrue("Score should equal 10, difficulty 1", testScores.get(0).toString().equals(scoreBoardController.getAllScores().get(0).toString()));
+
+	}
+
+	@Test
+	public void testUpdateHighScore() {
+		BorderPane root = new BorderPane();
+		root.setCenter(new Level(0));
+		scoreBoardController = new ScoreBoardController(root);
+		gameController = new GameController(root);
+		ScoreBoardController.setHighScore(10);
+		int newScoreLower = 5;
+		int newScoreHigher = 20;
+		//scoreBoardController.comapreScore(newScoreLower);
+		ScoreBoardController.setHighScore(newScoreLower);
+		assertEquals("Should be 10", 10, scoreBoardController.getHighScore() );
+
+		ScoreBoardController.setHighScore(newScoreHigher);
+		assertEquals("Should be 20",20, scoreBoardController.getHighScore() );
+
+	}
+
+	@Test
+	public void testGetSizeFunction(){
+		BorderPane root = new BorderPane();
+		root.setCenter(new Level(0));
+		gameController = new GameController(root);
+		scoreBoardController = new ScoreBoardController(root);
+
+
+		assertEquals("Should be 1",1,scoreBoardController.getallScoresSize());
+
+
+	}
+
+	@Test
+	public void testCreateGrid(){
+		BorderPane root = new BorderPane();
+		BorderPane scorePanre = new BorderPane();
+		root.setCenter(new Level(0));
+		gameController = new GameController(root);
+		scoreBoardController = new ScoreBoardController(root);
+		ScoreBoardController.CreateGridPane cg = new ScoreBoardController.CreateGridPane(root);
+		//createGridPane = new CreateGridPane(scorePanre);
+		assertNotNull(root);
+	}
+	@Test
+	public void testBubbleCreate() {
+		// Test for creating a bubble
+		//Should create bubble of radius=RADIUS at coordinates supplied
+		Circle myCircle = new Circle(Configurations.radius);
+		assertNotNull(myCircle);
+		assertTrue(Configurations.radius == myCircle.getRadius());
+	}
+
+	@Test
+	public void testBubbleMinBoundries() {
+		//Test for minimum distance from walls and other bubbles
+		//before creating bubble at locations
+		testLevel = new Level(1);
+		Bubble myCircle = new Bubble(new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		myCircle.bubble.setLayoutY(200);
+		myCircle.bubble.setLayoutX(200);
+		assertTrue(myCircle.stage == 0);
+
+	}
+
+	@Test
+	public void testBubbleClicked() {
+		//Test for bubble when user clicks it
+		//Bubble should pop and user be awarded points
+		testLevel = new Level(1);
+		Bubble myCircle = new Bubble(new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		assertTrue(myCircle.stage == 0);
+	}
+
+	@Test
+	public void testBubbleHitsWall() {
+		//Test for when bubble hits a wall
+		//Bubble should pop and user loses life
+		testLevel = new Level(1);
+		Bubble myCircle = new Bubble(new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		myCircle.bubble.setLayoutY(0);
+		myCircle.bubble.setLayoutX(0);
+		assertTrue(myCircle.stage == 0);
+	}
+
+	@Test
+	public void testBubbleHitsBubble() {
+		//Test for when bubbble hits another bubble
+		//Both bubbles should pop and user loses life twice
+		testLevel = new Level(1);
+		Bubble myCircle = new Bubble(new Circle(Configurations.radius));
+		Bubble myCircle2 = new Bubble(new Circle(Configurations.radius));
+		testLevel.getChildren().add(myCircle.bubble);
+		myCircle.bubble.setLayoutY(200);
+		myCircle.bubble.setLayoutX(200);
+		myCircle2.bubble.setLayoutY(200);
+		myCircle2.bubble.setLayoutX(200);
+		try{
+			testLevel.myBubbles.add(myCircle2);
+		}catch (NullPointerException e){}//scoreboard
+		testLevel.circleIntersection(myCircle, false);
+		assertTrue(myCircle.stage == 2);
+	}
+
+	@Test
+	public void testRandom() {
+		//Test random points creation
+		//Should not receive same points over and over again
+		int y = Utilities.randInt(0, Configurations.MAIN_SCREEN_HEIGHT);
+		int x = Utilities.randInt(0, Configurations.MAIN_SCREEN_WIDTH);
+		assertTrue(y > -1 && y < Configurations.MAIN_SCREEN_HEIGHT + 1);
+		assertTrue(x > -1 && x < Configurations.MAIN_SCREEN_WIDTH + 1);
+	}
+
 }
