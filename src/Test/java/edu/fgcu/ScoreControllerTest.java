@@ -154,6 +154,7 @@ public class ScoreControllerTest extends Application{
         root.setCenter(new Level(0));
         gameController = new GameController(root);
 		ScoreBoardController.setHighScore(10);
+		
 		assertNotNull(root);
 	}
 	

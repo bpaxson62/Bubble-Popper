@@ -358,12 +358,7 @@ public class ScoreBoardController extends Parent{
 		//limited to last 20 scores shown
 		
 		for(int i=0;i<allScores.size();i++){
-			//make this use list instead of temp
-		/*	scoreTxt =new Text("Temp"+ i);
-			grid.add(scoreTxt,1,i+2);
-			difficultyTxt = new Text("Dif Temp"+i);
-			grid.add(difficultyTxt,5,i+2);
-			*/
+
 			String Temp = allScores.get(i).toString();
 			scoreTxt = new Text(Temp);
 			scoreTxt.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,16));
