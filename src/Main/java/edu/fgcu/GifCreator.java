@@ -17,24 +17,11 @@ import java.util.Iterator;
  * Created by brian on 3/12/2015.
  */
 public class GifCreator {
-    private File Gif;
-    private String dir;
     public static boolean record = true;
     public static final String pictureStorageDir = System.getProperty("user.dir") + "//src//Main//tmp";
     public static final String gifOutputDir = System.getProperty("user.dir") + "//src/Main//gifs";
-
-    public GifCreator() {
-
-    }
-
     public static int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-
-
     public static int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
-    public void createImage() {
-
-    }
 
     public static void startRecord() {
         record = true;
@@ -108,7 +95,6 @@ public class GifCreator {
             BufferedImage firstImage = ImageIO.read(fileLst[0]);
             // create a new BufferedOutputStream with the last argument
 
-
             ImageOutputStream output =
                     new FileImageOutputStream(new File(gifOutputDir + File.separator + System.currentTimeMillis() + ".gif"));
 
@@ -125,7 +111,6 @@ public class GifCreator {
                     writer.writeToSequence(nextImage);
                 }
             }
-
             writer.close();
             output.close();
         } catch (Exception ignored) {
@@ -153,14 +138,13 @@ public class GifCreator {
 
     private static final String[] acceptedPictureTypes = {"jpg", "png", "jpeg"};
 
-    private static boolean isPicture(String file) {
+    public static boolean isPicture(String file) {
         String[] fileSplit = file.split("\\.");
         String extension = fileSplit[fileSplit.length - 1];
 
         for (String type : acceptedPictureTypes) {
             if (extension.equals(type)) return true;
         }
-
         return false;
     }
 }
