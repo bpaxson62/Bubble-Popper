@@ -290,8 +290,8 @@ public class ScoreBoardController extends Parent{
 	}
 	
 	//Get Methods
-	public int getHighScore(){
-		return this.highScore;
+	public static int getHighScore(){
+		return highScore;
 		}
 	
 	public List<Scores> getAllScores(){
@@ -321,7 +321,7 @@ public class ScoreBoardController extends Parent{
 	}
 	
 	//GridPane to display the scores in one column and difficulty in another
-	public class CreateGridPane extends Parent{
+	public static class CreateGridPane extends Parent{
 		private BorderPane score;
 		public CreateGridPane(BorderPane scoreBoard){
 		this.score = scoreBoard;

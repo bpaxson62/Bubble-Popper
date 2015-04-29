@@ -10,9 +10,8 @@ import javafx.stage.Stage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
 
 public class ScoreControllerTest extends Application{
 	private static ScoreBoardController scoreBoardController;
@@ -160,10 +159,12 @@ public class ScoreControllerTest extends Application{
 	@Test
 	public void testCreateGrid(){
 		BorderPane root = new BorderPane();
+		BorderPane scorePanre = new BorderPane();
         root.setCenter(new Level(0));
         gameController = new GameController(root);
-		ScoreBoardController.setHighScore(10);
-		
+        scoreBoardController = new ScoreBoardController(root);
+        ScoreBoardController.CreateGridPane cg = new ScoreBoardController.CreateGridPane(root);
+        //createGridPane = new CreateGridPane(scorePanre);
 		assertNotNull(root);
 	}
 	
