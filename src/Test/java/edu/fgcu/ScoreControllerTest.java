@@ -40,7 +40,7 @@ public class ScoreControllerTest extends Application{
 	    
 
 	    @BeforeClass
-	    
+
 	    public static void initJFX() {
 	        Thread t = new Thread("Initialize the JavaFX") {
 	            @Override

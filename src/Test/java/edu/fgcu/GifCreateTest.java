@@ -18,6 +18,7 @@ public class GifCreateTest {
 	
 	@Test
 	public void testGifCreate(){
+		GifCreator.makeDirectories();
 		//test if gif file is created
 		GifCreator.deleteDir();
 		File input = new File(GifCreator.gifOutputDir);
@@ -38,6 +39,7 @@ public class GifCreateTest {
 	
 	@Test
 	public void testGifSaveLocation(){
+		GifCreator.makeDirectories();
 		//test to make sure gif saves to correct location
 		File input = new File(GifCreator.gifOutputDir);
 		int sizeBefore = input.listFiles().length;
@@ -57,6 +59,7 @@ public class GifCreateTest {
 	
 	@Test
 	public void testGifSize(){
+		GifCreator.makeDirectories();
 		//test to make sure there is something in the gif file
 		//gif should not be 0bits in size
 		GifCreator.deleteDir();

@@ -25,6 +25,7 @@ public class GifCreator {
 
     public static void startRecord() {
         record = true;
+        makeDirectories();
 
         Thread recordThread = new Thread() {
             @Override
@@ -74,6 +75,16 @@ public class GifCreator {
         recordThread.start();
     }
 
+    public static void  makeDirectories(){
+        File file = new File(pictureStorageDir);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        File file2 = new File(gifOutputDir);
+        if(!file2.exists()){
+            file2.mkdir();
+        }
+    }
 
     public static void stopRecording() {
         record = false;
