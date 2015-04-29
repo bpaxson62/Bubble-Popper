@@ -5,9 +5,9 @@ import javafx.scene.layout.BorderPane;
 public class GameController{
 	
 	private static BorderPane root; //Instance of scene game node
-	private static int lifePoints;  //Users life points
-	private static String lifePointsTxt;
-	private static int score; //Users Score
+	private static int lifePoints=10;  //Users life points
+	private static String lifePointsTxt="10";
+	private static int score=0; //Users Score
 	private static String scoreTxt;
 
 	private static int difficulty=0;
@@ -99,13 +99,15 @@ public class GameController{
 	}
 	
 	public static void decreaseLifePoints(){
+		
 		lifePoints--;
 		setLifePointsTxt(lifePoints);
-		//lifePointsTxt = Integer.toString(lifePoints);
-		//If LifePOints hit zero, game is over
 		if(lifePoints==0){
 			endGame();
 		}
+		//lifePointsTxt = Integer.toString(lifePoints);
+		//If LifePOints hit zero, game is over
+		
 	}
 	
 	

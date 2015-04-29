@@ -19,6 +19,7 @@ public class Main extends Application {
     private static GameController gameController;
     private static ScoreBoardController scoreBoardController;
     private static Scene mainScene;
+    private static BorderPane root = new BorderPane();
     public static Scene getScene(){
         return mainScene;
     }
@@ -28,8 +29,8 @@ public class Main extends Application {
     
     public static ScoreBoardController getScoreBoardController(){
     	return scoreBoardController;
+    	
     }
-
 
     public double getSampleWidth() { return 150; }
 
@@ -37,7 +38,7 @@ public class Main extends Application {
 
     @Override public void start(Stage primaryStage) throws Exception {
     	// This creates the basic window, commented out for the moment
-    	BorderPane root = new BorderPane();
+    	//BorderPane root = new BorderPane();
         canvas = new Canvas(Configurations.MAIN_SCREEN_WIDTH + 2*Configurations.WINDOW_BOARDER,
                 Configurations.MAIN_SCREEN_HEIGHT + 2*Configurations.WINDOW_BOARDER);
         GraphicsContext gc = canvas.getGraphicsContext2D();
