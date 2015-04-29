@@ -136,6 +136,19 @@ public class ScoreControllerTest extends Application{
 	}
 	
 	@Test
+	public void testGetSizeFunction(){
+		BorderPane root = new BorderPane();
+        root.setCenter(new Level(0));
+        gameController = new GameController(root);
+        scoreBoardController = new ScoreBoardController(root);
+        
+        scoreBoardController.addScoreToList(10, 0);
+		assertEquals("Should be 1",2,scoreBoardController.getallScoresSize());
+		
+		
+	}
+	
+	@Test
 	public void testCreateGrid(){
 		BorderPane root = new BorderPane();
         root.setCenter(new Level(0));
@@ -143,5 +156,7 @@ public class ScoreControllerTest extends Application{
 		ScoreBoardController.setHighScore(10);
 		assertNotNull(root);
 	}
+	
+
 	 
 }
