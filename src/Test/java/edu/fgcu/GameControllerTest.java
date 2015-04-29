@@ -5,14 +5,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.fgcu.GameController;
 import static org.junit.Assert.*;
 
 public class GameControllerTest extends Application{
