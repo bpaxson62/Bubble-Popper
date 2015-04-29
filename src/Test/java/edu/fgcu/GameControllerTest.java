@@ -181,6 +181,7 @@ public class GameControllerTest extends Application{
 	
 	@Test
 	public void testGetLifepoints(){
+		//change
 		GameController.getLifePointsTxt();
 		assertEquals("SHould be 10","10",GameController.getLifePointsTxt());
 	}
