@@ -78,6 +78,7 @@ public class ScoreBoardController extends Parent{
 //	private static Level level;
 	//static ScoreBoardController outer = new ScoreBoardController(root);
 	
+	
 	public ScoreBoardController(BorderPane scoreBoard){
 		this.root = scoreBoard;
 		gameController = Main.getGameController();
@@ -90,14 +91,6 @@ public class ScoreBoardController extends Parent{
 		
 		public Scores(int scores, int difficulty){
 			this.scores=scores;
-			switch(difficulty){
-			case 1: this.difficulty = Configurations.EASY_DIFFICULTY;
-				break;
-			case 2: this.difficulty = Configurations.NORMAL_DIFFICULTY;
-				break;
-			case 3: this.difficulty = Configurations.HARD_DIFFICULTY;
-				break;
-			}
 			
 		}
 	public String toString(){
@@ -168,8 +161,6 @@ public class ScoreBoardController extends Parent{
     		gameController.setDifficulty(new_value.intValue());
     		}
     	});
-    	
-    	System.out.println("Difficultie = "+gameController.getDifficulty());
     	//Labels
     	
     	scoreTxt.setText("Score:");
@@ -196,12 +187,7 @@ public class ScoreBoardController extends Parent{
     	bToolBar.getItems().add(scoreValue);
     	bToolBar.getItems().add(lifePointsTxt);
     	bToolBar.getItems().add(lifePointsValue);
-       // StackPane one = new StackPane();
-       // one.getChildren().addAll(scoreValue);
-    	//stack.getChildren().addAll(scoreTxt);
-    	
-    	//hbox.getChildren().addAll(stack,one);
-    	//toolbar.getChildren().addAll(scoreBoardBtn,difficulties, startStopBtn, stack, one);
+
     	
     	root.setTop(toolbar);
     	root.setBottom(bToolBar);
@@ -423,17 +409,5 @@ public class ScoreBoardController extends Parent{
 			return null;
 		}
 	}
-	
-/*	public void handle(ActionEvent t) {
-		BorderPane border = new BorderPane();
-		
-		Stage stage = new Stage();
-		//Scene scene = new Scene();
-		
-		//Center Pane
-        //adds Gridpane to center of BorderPane
-        border.setCenter(addGridPane());
-       
-    }
-	*/
+
 }

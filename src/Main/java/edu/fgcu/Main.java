@@ -32,10 +32,6 @@ public class Main extends Application {
     	
     }
 
-    public static BorderPane getRoot(){
-    	return root;
-    }
-
     public double getSampleWidth() { return 150; }
 
     public double getSampleHeight() { return 150; }

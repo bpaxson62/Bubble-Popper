@@ -23,20 +23,23 @@ public class ScoreControllerTest extends Application{
 	public class TestObject{
 		private int score;
 		private int difficulty;
-		TestObject(int score, int difficulty){
+		public TestObject(int score, int difficulty){
 			this.score=score;
 			this.difficulty=difficulty;
 		}
 	}
 
-	
 	protected ObservableList<TestObject> testScores;
 	public void addTestScores(){
+		if(testScores!=null){
 		testScores.add(new TestObject(10, 0));
+		}
 	}
+	
 	    
 
 	    @BeforeClass
+	    
 	    public static void initJFX() {
 	        Thread t = new Thread("Initialize the JavaFX") {
 	            @Override
@@ -92,6 +95,11 @@ public class ScoreControllerTest extends Application{
 	@Test
 	public void testScoreboardCreate() {
 		//test for if scoreboard is created when button to view is clicked
+		BorderPane root = new BorderPane();
+        root.setCenter(new Level(0));
+
+        gameController = new GameController(root);
+        scoreBoardController = new ScoreBoardController(root);
 		assertNotNull(root);
 	}
 	
@@ -103,7 +111,9 @@ public class ScoreControllerTest extends Application{
         gameController = new GameController(root);
         scoreBoardController = new ScoreBoardController(root);
 		scoreBoardController.addScoreToList(10, 0);
-		assertEquals("Score should equal 10, difficulty 1", testScores, scoreBoardController.getAllScores() );
+		addTestScores();
+		//testScores.add(new TestObject(10, 0));
+		assertEquals("Score should equal 10, difficulty 1", testScores, scoreBoardController.getAllScores());
 		
 	}
 	
@@ -123,6 +133,15 @@ public class ScoreControllerTest extends Application{
 		ScoreBoardController.setHighScore(newScoreHigher);
 		assertEquals("Should be 20",20, scoreBoardController.getHighScore() );
 		
+	}
+	
+	@Test
+	public void testCreateGrid(){
+		BorderPane root = new BorderPane();
+        root.setCenter(new Level(0));
+        gameController = new GameController(root);
+		ScoreBoardController.setHighScore(10);
+		assertNotNull(root);
 	}
 	 
 }
