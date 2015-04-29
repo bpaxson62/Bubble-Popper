@@ -122,8 +122,6 @@ public class GameController{
 		scoreBoardController = new ScoreBoardController(root);
 		System.out.println("Difficulty is: "+getDifficulty());
 	}
-	
-	
 
 
 	public static void increaseScore(){

@@ -182,4 +182,20 @@ public class GameControllerTest extends Application{
 		GameController.endGame();
 		assertNull(root.getCenter());
 	}
+	
+	@Test
+	public void testGetLifepoints(){
+		GameController.getLifePointsTxt();
+		assertEquals("SHould be 10","10",GameController.getLifePointsTxt());
+	}
+	@Test
+	public void testGetDifficulty(){
+		gameController.setDifficulty(2);
+		assertEquals("SHould be 10",2,GameController.getDifficulty());
+	}
+	
+	public void testGameStart(){
+		gameController.gameStart();
+		assertEquals("LP is 10",10,gameController.getLifePoints());
+	}
 }
